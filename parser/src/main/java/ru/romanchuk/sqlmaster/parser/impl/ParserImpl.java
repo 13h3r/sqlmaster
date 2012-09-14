@@ -38,10 +38,4 @@ public class ParserImpl implements Parser {
         }
         return result;
     }
-
-    /*
-    if(current.isEmpty()) {
-                throw new ParseException();
-            }
-     */
 }
