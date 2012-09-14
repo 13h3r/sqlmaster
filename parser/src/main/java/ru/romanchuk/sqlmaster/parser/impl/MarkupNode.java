@@ -9,7 +9,7 @@ import java.util.List;
  * @author Alexey Romanchuk
  */
 public class MarkupNode implements Node {
-    private List<Node> childNodes = new ArrayList<>();
+    private List<Node> childNodes = new ArrayList<Node>();
     private String markup;
 
     public MarkupNode(String markup) {

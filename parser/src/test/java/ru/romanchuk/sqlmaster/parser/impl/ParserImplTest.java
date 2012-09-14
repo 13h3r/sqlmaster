@@ -27,8 +27,15 @@ public class ParserImplTest {
 
     @Test
     public void testUnfinishedMarkup() {
+        failTest("select * from /**table where 1 = 1");
+        failTest("select * from */table where 1 = 1");
+        failTest("select * from /** /**table where 1 = 1");
+        failTest("select * from */table /** where 1 = 1");
+    }
+
+    private void failTest(String template) {
         try {
-            p.parse("select * from /**table where 1 = 1");
+            p.parse(template);
             fail();
         } catch(ParseException p) {}
     }
