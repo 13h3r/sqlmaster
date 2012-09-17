@@ -20,21 +20,19 @@ public class ParserImplPhase2Test {
 
     @Test
     public void testUnfinishedMarkup() {
-//        failWithParseException("select * from /**table*/ where 1 = 1");
+        failWithParseException("select * from /**table*/ where 1 = 1");
     }
 
     @Test
     public void testOneParameter() {
         RootNode t = p.phase2(p.phase1("select * from client where name = /**string name(*/'Abdul Jamal'/**)*/"));
-        assertNotNull(t);
-        assertEquals(t.getChildes().size(), 2);
-        PlainTextNode text = (PlainTextNode) t.getChildes().get(0);
-        assertEquals("select * from client where name = ", text.getText());
-        ParameterNode param = (ParameterNode) t.getChildes().get(1);
-        assertEquals(param.getName(), "name");
-        assertEquals(param.getType(), "string");
-        assertEquals(param.getChildes().size(), 1);
-        assertEquals(((PlainTextNode) param.getChildes().get(0)).getText(), "'Abdul Jamal'");
+
+        RootNode ethalon = new RootNode();
+        ethalon.add(new PlainTextNode("select * from client where name = "));
+        ParameterNode p1 = new ParameterNode("name", "string");
+        p1.add(new PlainTextNode("'Abdul Jamal'"));
+        ethalon.add(p1);
+        assertEquals(t, ethalon);
     }
 
 
@@ -47,7 +45,20 @@ public class ParserImplPhase2Test {
 
     @Test
     public void testTwoMarkupInOneComment() {
-//        p.phase2(p.phase1("select /**string name(*/name/**) string order(*/order/**)*/"));
+        RootNode result = p.phase2(p.phase1("select /**string name(*/name/**) int order(*/order/**)*/"));
+
+        RootNode ethalon = new RootNode();
+        ethalon.add(new PlainTextNode("select "));
+        ParameterNode p1 = new ParameterNode("name", "string");
+        ethalon.add(p1);
+        p1.add(new PlainTextNode("name"));
+        ParameterNode p2 = new ParameterNode("order", "int");
+        ethalon.add(p2);
+        p2.add(new PlainTextNode("order"));
+
+        assertEquals(result, ethalon);
+
+
     }
 
     private void failWithParseException(String template) {

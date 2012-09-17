@@ -37,6 +37,4 @@ public class AbstractNodeWithChildes extends AbstractNode implements NodeWithChi
     public int hashCode() {
         return childes != null ? childes.hashCode() : 0;
     }
-
-
 }

@@ -30,4 +30,9 @@ public class PlainTextNode extends AbstractNode {
     public int hashCode() {
         return text.hashCode();
     }
+
+    @Override
+    public String toString() {
+        return "PlainTextNode(" + text + ')';
+    }
 }

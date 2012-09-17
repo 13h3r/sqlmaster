@@ -68,7 +68,7 @@ public class ParserImpl implements Parser {
                         markup = startPattern.group(3).trim();
                     }else if(markup.startsWith(")")) {
                         currentRoot = currentRoot.getParent();
-                        markup = StringUtils.substringAfter(markup, ")");
+                        markup = StringUtils.substringAfter(markup, ")").trim();
                     }else {
                         throw new ParseException("Unable to parse: " + markup);
                     }

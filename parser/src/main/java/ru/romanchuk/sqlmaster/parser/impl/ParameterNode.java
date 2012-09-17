@@ -1,5 +1,7 @@
 package ru.romanchuk.sqlmaster.parser.impl;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
  * @author Alexey Romanchuk
  */
@@ -40,5 +42,14 @@ public class ParameterNode extends AbstractNodeWithChildes {
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (type != null ? type.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ParameterNode(" +
+                "name='" + name + '\'' +
+                ", type='" + type + '\'' +
+                ", childes='" + StringUtils.join(getChildes(), ",") + "\'" +
+                '}';
     }
 }
