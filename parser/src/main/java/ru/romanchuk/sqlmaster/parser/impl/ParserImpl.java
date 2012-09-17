@@ -4,8 +4,8 @@ import org.apache.commons.lang.StringUtils;
 import ru.romanchuk.sqlmaster.parser.Node;
 import ru.romanchuk.sqlmaster.parser.NodeWithChildes;
 import ru.romanchuk.sqlmaster.parser.Parser;
+import ru.romanchuk.sqlmaster.parser.TemplateTree;
 
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -17,10 +17,11 @@ public class ParserImpl implements Parser {
     public static final String COMMENT_START = "/**";
     public static final String COMMENT_END = "*/";
     public static final String ELEMENT_TEMPLATE_START = "^([a-z]+)[ ]+([a-zA-Z0-9_-]+)[ ]*\\((.*)";
+    public static final String ELEMENT_TEMPLATE_END = ")";
 
     @Override
-    public List<Node> parse(String template) {
-        return null;
+    public TemplateTree parse(String template) {
+        return new TemplateTreeImpl(phase2(phase1(template)));
     }
 
     public RootNode phase1(String template) {
@@ -68,7 +69,7 @@ public class ParserImpl implements Parser {
                         markup = startPattern.group(3).trim();
                     }else if(markup.startsWith(")")) {
                         currentRoot = currentRoot.getParent();
-                        markup = StringUtils.substringAfter(markup, ")").trim();
+                        markup = StringUtils.substringAfter(markup, ELEMENT_TEMPLATE_END).trim();
                     }else {
                         throw new ParseException("Unable to parse: " + markup);
                     }
