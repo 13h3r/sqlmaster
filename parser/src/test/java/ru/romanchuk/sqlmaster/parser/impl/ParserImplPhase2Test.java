@@ -20,7 +20,14 @@ public class ParserImplPhase2Test {
 
     @Test
     public void testUnfinishedMarkup() {
+        // no (
         failWithParseException("select * from /**table*/ where 1 = 1");
+        // wrong number of words
+        failWithParseException("select * from /**test test table ()*/ where 1 = 1");
+        // missed )
+        failWithParseException("select * from /**test table (*/ where 1 = 1");
+        // starts with )
+        failWithParseException("select * from /**)test table ()*/ where 1 = 1");
     }
 
     @Test
@@ -35,6 +42,15 @@ public class ParserImplPhase2Test {
         assertEquals(t, ethalon);
     }
 
+    @Test
+    public void testOneParameterAndNoValueInside() {
+        RootNode t = p.phase2(p.phase1("select * from client where name = /**string name()*/"));
+
+        RootNode ethalon = new RootNode();
+        ethalon.add(new PlainTextNode("select * from client where name = "));
+        ethalon.add(new ParameterNode("name", "string"));
+        assertEquals(t, ethalon);
+    }
 
     @Test
     public void emptyTemplate() {
