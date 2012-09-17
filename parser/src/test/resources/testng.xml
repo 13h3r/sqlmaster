@@ -1,0 +1,7 @@
+<suite name="All tests" verbose="1">
+    <test name="All tests">
+        <packages>
+            <package name="ru.romanchuk.*"/>
+        </packages>
+    </test>
+</suite>
