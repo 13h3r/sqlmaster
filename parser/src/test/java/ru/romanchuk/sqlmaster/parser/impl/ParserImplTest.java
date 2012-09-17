@@ -2,6 +2,9 @@ package ru.romanchuk.sqlmaster.parser.impl;
 
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+import ru.romanchuk.sqlmaster.parser.Node;
+
+import java.util.List;
 
 import static org.testng.Assert.*;
 
@@ -20,9 +23,9 @@ public class ParserImplTest {
     
     @Test
     public void simpleTest() {
-        TemplateImpl t = p.parse("select * from /**string table(*/client/**)*/ where 1 = 1");
-        assertNotNull(t.getNodes());
-        assertEquals(t.getNodes().size(), 5);
+        List<Node> t = p.phase1("select * from /**string table(*/client/**)*/ where 1 = 1");
+        assertNotNull(t);
+        assertEquals(t.size(), 5);
     }
 
     @Test
@@ -33,17 +36,18 @@ public class ParserImplTest {
         failTest("select * from */table /** where 1 = 1");
     }
 
+    @Test
+    public void notMarkup() {
+        List<Node> t = p.phase1("select * from client where 1 = 1 and 5 / 8 * 1");
+        assertNotNull(t);
+        assertEquals(t.size(), 1);
+    }
+
     private void failTest(String template) {
         try {
-            p.parse(template);
+            p.phase1(template);
             fail();
         } catch(ParseException p) {}
     }
 
-    @Test
-    public void notMarkup() {
-        TemplateImpl t = p.parse("select * from client where 1 = 1 and 5 / 8 * 1");
-        assertNotNull(t.getNodes());
-        assertEquals(t.getNodes().size(), 1);
-    }
 }

@@ -1,8 +1,10 @@
 package ru.romanchuk.sqlmaster.parser;
 
+import java.util.List;
+
 /**
  * @author Alexey Romanchuk
  */
 public interface Parser {
-    Template parse(String template);
+    List<Node> parse(String template);
 }

@@ -1,7 +1,11 @@
 package ru.romanchuk.sqlmaster.parser.impl;
 
 import org.apache.commons.lang.StringUtils;
+import ru.romanchuk.sqlmaster.parser.Node;
 import ru.romanchuk.sqlmaster.parser.Parser;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Alexey Romanchuk
@@ -12,8 +16,12 @@ public class ParserImpl implements Parser {
     public static final String COMMENT_END = "*/";
 
     @Override
-    public TemplateImpl parse(String template) {
-        TemplateImpl result = new TemplateImpl();
+    public List<Node> parse(String template) {
+        return null;
+    }
+
+    public List<Node> phase1(String template) {
+        List<Node> result = new ArrayList<Node>();
         String current = template;
         while(!current.isEmpty()) {
             boolean startFound = false;
@@ -22,7 +30,7 @@ public class ParserImpl implements Parser {
                 if(text.contains(COMMENT_END)) {
                     throw new ParseException();
                 }
-                result.getNodes().add(new PlainTextNode(text));
+                result.add(new PlainTextNode(text));
                 startFound = true;
                 current = StringUtils.substringAfter(current, COMMENT_START);
             }
@@ -33,7 +41,7 @@ public class ParserImpl implements Parser {
                 throw new ParseException();
             }
             String markupText = StringUtils.substringBefore(current, COMMENT_END);
-            result.getNodes().add(new MarkupNode(markupText));
+            result.add(new MarkupNode(markupText));
             current = StringUtils.substringAfter(current, COMMENT_END);
         }
         return result;
