@@ -17,4 +17,12 @@ public class Template {
     public void assignValue(String name, Object value) {
         state.assignValue(name, value);
     }
+
+    public TemplateTree getTree() {
+        return tree;
+    }
+
+    public TemplateState getState() {
+        return state;
+    }
 }

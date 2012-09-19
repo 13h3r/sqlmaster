@@ -11,4 +11,9 @@ public class TemplateTreeImpl implements TemplateTree {
     public TemplateTreeImpl(RootNode tree) {
         this.tree = tree;
     }
+
+    @Override
+    public RootNode getRootNode() {
+        return tree;
+    }
 }
