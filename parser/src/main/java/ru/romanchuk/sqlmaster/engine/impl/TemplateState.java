@@ -18,4 +18,8 @@ public class TemplateState {
         elementsValue.put(name, value);
     }
 
+    public Object getAssignedValue(String key) {
+        return elementsValue.get(key);
+    }
+
 }

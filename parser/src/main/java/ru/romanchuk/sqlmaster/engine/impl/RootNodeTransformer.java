@@ -8,10 +8,10 @@ import ru.romanchuk.sqlmaster.parser.impl.RootNode;
  */
 public class RootNodeTransformer implements NodeTransformer<RootNode> {
     @Override
-    public String transform(RootNode node) {
+    public String transform(RootNode node, TemplateState state) {
         StringBuilder result = new StringBuilder();
         for(Node walker : node.getChildes()){
-            result.append(EngineImpl.processNode(walker));
+            result.append(EngineImpl.processNode(walker, state));
         }
         return result.toString();
     }

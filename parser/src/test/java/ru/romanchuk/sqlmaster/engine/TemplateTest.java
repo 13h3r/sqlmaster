@@ -16,4 +16,13 @@ public class TemplateTest {
 
         Assert.assertEquals(result, "select 1 from dual");
     }
+
+    @Test
+    public void test1Parameter() {
+        Template t = EngineFacade.createTemplate("select 1 from /**string table(*/dual/**)*/");
+        t.assignValue("table", "t");
+        String result = EngineFacade.process(t);
+
+        Assert.assertEquals(result, "select 1 from t");
+    }
 }

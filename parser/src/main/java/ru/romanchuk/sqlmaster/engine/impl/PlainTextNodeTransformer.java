@@ -7,7 +7,7 @@ import ru.romanchuk.sqlmaster.parser.impl.PlainTextNode;
  */
 public class PlainTextNodeTransformer implements NodeTransformer<PlainTextNode> {
     @Override
-    public String transform(PlainTextNode node) {
+    public String transform(PlainTextNode node, TemplateState state) {
         return node.getText();
     }
 }
