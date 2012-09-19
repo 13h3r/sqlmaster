@@ -1,8 +1,9 @@
 package ru.romanchuk.sqlmaster.engine;
 
-import org.testng.Assert;
 import org.testng.annotations.Test;
 import ru.romanchuk.sqlmaster.engine.impl.Template;
+
+import static org.testng.Assert.fail;
 
 /**
  * @author Alexey Romanchuk
@@ -10,19 +11,13 @@ import ru.romanchuk.sqlmaster.engine.impl.Template;
 public class TemplateTest {
 
     @Test
-    public void emptyTemplate() {
-        Template t = EngineFacade.createTemplate("select 1 from dual");
-        String result = EngineFacade.process(t);
+    public void setNotExistedParameter() {
+        try {
+            Template t = EngineFacade.createTemplate("select 1 from dual");
+            t.assignValue("a", "a");
+            fail();
+        } catch (EngineException e) {
+        }
 
-        Assert.assertEquals(result, "select 1 from dual");
-    }
-
-    @Test
-    public void test1Parameter() {
-        Template t = EngineFacade.createTemplate("select 1 from /**string table(*/dual/**)*/");
-        t.assignValue("table", "t");
-        String result = EngineFacade.process(t);
-
-        Assert.assertEquals(result, "select 1 from t");
     }
 }

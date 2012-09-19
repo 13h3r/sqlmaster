@@ -1,5 +1,6 @@
 package ru.romanchuk.sqlmaster.parser;
 
+import ru.romanchuk.sqlmaster.parser.impl.ParameterNode;
 import ru.romanchuk.sqlmaster.parser.impl.RootNode;
 
 /**
@@ -7,5 +8,7 @@ import ru.romanchuk.sqlmaster.parser.impl.RootNode;
  */
 public interface TemplateTree {
     RootNode getRootNode();
+
+    ParameterNode getParameterNode(String name);
 
 }
