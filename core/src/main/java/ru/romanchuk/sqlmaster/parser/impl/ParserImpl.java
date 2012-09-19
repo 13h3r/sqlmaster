@@ -31,12 +31,17 @@ public class ParserImpl implements Parser {
             boolean startFound = false;
             String text = StringUtils.substringBefore(current, COMMENT_START);
             if(!text.isEmpty()) {
+                result.add(new PlainTextNode(text));
                 if(text.contains(COMMENT_END)) {
                     throw new ParseException();
                 }
-                result.add(new PlainTextNode(text));
+
+            }
+            if(current.contains(COMMENT_START)){
                 startFound = true;
                 current = StringUtils.substringAfter(current, COMMENT_START);
+            } else {
+                break;
             }
             if(current.isEmpty()) {
                 break;
@@ -63,6 +68,9 @@ public class ParserImpl implements Parser {
                 while(!markup.isEmpty()) {
                     Matcher startPattern = Pattern.compile(ELEMENT_TEMPLATE_START).matcher(markup);
                     if(startPattern.matches()) {
+                        if(currentRoot instanceof ParameterNode) {
+                            throw new ParseException("Element " + startPattern.group(2) + " placed inside other element");
+                        }
                         ParameterNode parameterNode = new ParameterNode(startPattern.group(2), startPattern.group(1));
                         currentRoot.add(parameterNode);
                         currentRoot = parameterNode;

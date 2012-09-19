@@ -50,6 +50,6 @@ public class ParameterNode extends AbstractNodeWithChildes {
                 "name='" + name + '\'' +
                 ", type='" + type + '\'' +
                 ", childes='" + StringUtils.join(getChildes(), ",") + "\'" +
-                '}';
+                ')';
     }
 }

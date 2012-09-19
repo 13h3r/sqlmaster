@@ -43,6 +43,11 @@ public class ParserImplPhase2Test {
     }
 
     @Test
+    public void testParameterInParameter() {
+        failWithParseException("/**string p1(string p2())*/");
+    }
+
+    @Test
     public void testOneParameterAndNoValueInside() {
         RootNode t = p.phase2(p.phase1("select * from client where name = /**string name()*/"));
 

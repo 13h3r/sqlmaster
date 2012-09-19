@@ -35,5 +35,10 @@ public class MarkupNode extends AbstractNode {
         return markup.hashCode();
     }
 
-
+    @Override
+    public String toString() {
+        return "MarkupNode(" +
+                "markup='" + markup + '\'' +
+                ')';
+    }
 }
