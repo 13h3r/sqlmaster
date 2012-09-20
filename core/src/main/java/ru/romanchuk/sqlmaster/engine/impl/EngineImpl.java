@@ -30,6 +30,15 @@ public class EngineImpl {
     }
 
     public String process(Template template) {
+        validateAllParametersPresent(template);
         return processNode(template.getTree().getRootNode(), template.getState());
+    }
+
+    private void validateAllParametersPresent(Template template) {
+        for(ParameterNode walker : template.getTree().getParameters()) {
+            if(template.getState().getAssignedValue(walker.getName()) == null) {
+                throw new EngineException("Parameter value " + walker.getName() + " is not set");
+            }
+        }
     }
 }

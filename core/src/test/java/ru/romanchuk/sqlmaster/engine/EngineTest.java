@@ -4,6 +4,8 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import ru.romanchuk.sqlmaster.engine.impl.Template;
 
+import static org.testng.Assert.fail;
+
 /**
  * @author Alexey Romanchuk
  */
@@ -28,12 +30,12 @@ public class EngineTest {
 
     @Test
     public void test1ParameterNotSet() {
-        //todo
-//        Template t = EngineFacade.createTemplate("select 1 from /**string table(*/dual/**)*/");
-//        t.assignValue("table", "t");
-//        String result = EngineFacade.process(t);
-//
-//        Assert.assertEquals(result, "select 1 from t");
+        try {
+            Template t = EngineFacade.createTemplate("select 1 from /**string table(*/dual/**)*/");
+            EngineFacade.process(t);
+            fail();
+        } catch (EngineException e) {
+        }
     }
 
     @Test
