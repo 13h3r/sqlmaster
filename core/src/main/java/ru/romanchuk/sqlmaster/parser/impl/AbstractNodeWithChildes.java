@@ -28,9 +28,8 @@ public class AbstractNodeWithChildes extends AbstractNode implements NodeWithChi
 
         AbstractNodeWithChildes that = (AbstractNodeWithChildes) o;
 
-        if (childes != null ? !childes.equals(that.childes) : that.childes != null) return false;
+        return !(childes != null ? !childes.equals(that.childes) : that.childes != null);
 
-        return true;
     }
 
     @Override

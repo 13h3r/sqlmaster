@@ -21,9 +21,8 @@ public class PlainTextNode extends AbstractNode {
 
         PlainTextNode that = (PlainTextNode) o;
 
-        if (!text.equals(that.text)) return false;
+        return text.equals(that.text);
 
-        return true;
     }
 
     @Override

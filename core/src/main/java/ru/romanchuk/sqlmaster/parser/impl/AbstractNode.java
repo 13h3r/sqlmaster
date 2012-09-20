@@ -24,9 +24,8 @@ public class AbstractNode implements Node {
 
         AbstractNode that = (AbstractNode) o;
 
-        if (parent != null ? !parent.equals(that.parent) : that.parent != null) return false;
+        return !(parent != null ? !parent.equals(that.parent) : that.parent != null);
 
-        return true;
     }
 
     @Override

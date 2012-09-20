@@ -14,10 +14,6 @@ public class MarkupNode extends AbstractNode {
         return markup;
     }
 
-    public void setMarkup(String markup) {
-        this.markup = markup;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -25,9 +21,8 @@ public class MarkupNode extends AbstractNode {
 
         MarkupNode that = (MarkupNode) o;
 
-        if (!markup.equals(that.markup)) return false;
+        return markup.equals(that.markup);
 
-        return true;
     }
 
     @Override

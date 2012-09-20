@@ -6,7 +6,7 @@ import ru.romanchuk.sqlmaster.parser.impl.ParserImpl;
  * @author Alexey Romanchuk
  */
 public class ParserFacade {
-    public static final Parser createParser() {
+    public static Parser createParser() {
         return new ParserImpl();
     }
 }
