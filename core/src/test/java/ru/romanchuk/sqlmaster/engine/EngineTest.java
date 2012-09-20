@@ -4,6 +4,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import ru.romanchuk.sqlmaster.engine.impl.Template;
 
+import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.fail;
 
 /**
@@ -37,6 +38,16 @@ public class EngineTest {
         } catch (EngineException e) {
         }
     }
+
+    @Test
+    public void testTwoOccurrencesOfOneParameter() {
+        Template t = EngineFacade.createTemplate(
+                "select 1 from /**string table(*/dual/**)*/" +
+                        " join /**string table(*/dual/**)*/");
+        t.assignValue("table", "test1");
+        assertEquals("select 1 from test1 join test1", EngineFacade.process(t));
+    }
+
 
     @Test
     public void test2Parameter() {
