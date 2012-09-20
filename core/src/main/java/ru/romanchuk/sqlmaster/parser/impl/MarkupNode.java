@@ -37,8 +37,8 @@ public class MarkupNode extends AbstractNode {
 
     @Override
     public String toString() {
-        return "MarkupNode(" +
+        return "MarkupNode{" +
                 "markup='" + markup + '\'' +
-                ')';
+                '}';
     }
 }
