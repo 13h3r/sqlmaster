@@ -3,21 +3,15 @@ package ru.romanchuk.sqlmaster.parser.tree;
 /**
  * @author Alexey Romanchuk
  */
-public class ParameterNode extends AbstractNodeWithChildes {
-    private String name;
-    private String type;
+public class EmbeddedNode extends AbstractNodeWithChildes{
+    private final String name;
 
-    public ParameterNode(String name, String type) {
+    public EmbeddedNode(String name) {
         this.name = name;
-        this.type = type;
     }
 
     public String getName() {
         return name;
-    }
-
-    public String getType() {
-        return type;
     }
 
     @Override
@@ -26,26 +20,17 @@ public class ParameterNode extends AbstractNodeWithChildes {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
 
-        ParameterNode that = (ParameterNode) o;
+        EmbeddedNode that = (EmbeddedNode) o;
 
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
-        return !(type != null ? !type.equals(that.type) : that.type != null);
 
+        return true;
     }
 
     @Override
     public int hashCode() {
         int result = super.hashCode();
         result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (type != null ? type.hashCode() : 0);
         return result;
-    }
-
-    @Override
-    public String toString() {
-        return "ParameterNode(" +
-                "name='" + name + '\'' +
-                ", type='" + type + '\'' +
-                ')';
     }
 }

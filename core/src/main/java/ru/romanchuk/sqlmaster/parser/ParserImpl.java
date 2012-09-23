@@ -1,10 +1,7 @@
 package ru.romanchuk.sqlmaster.parser;
 
 import org.apache.commons.lang.StringUtils;
-import ru.romanchuk.sqlmaster.parser.tree.MarkupNode;
-import ru.romanchuk.sqlmaster.parser.tree.ParameterNode;
-import ru.romanchuk.sqlmaster.parser.tree.PlainTextNode;
-import ru.romanchuk.sqlmaster.parser.tree.RootNode;
+import ru.romanchuk.sqlmaster.parser.tree.*;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -16,8 +13,10 @@ class ParserImpl implements Parser {
 
     public static final String COMMENT_START = "/**";
     public static final String COMMENT_END = "*/";
-    public static final String ELEMENT_TEMPLATE_START = "^([a-z]+)[ ]+([a-zA-Z0-9_-]+)[ ]*\\((.*)";
-    public static final String ELEMENT_TEMPLATE_END = ")";
+    public static final String PARAMETER_START = "^([a-z]+)[ ]+([a-zA-Z0-9_-]+)[ ]*\\((.*)";
+    public static final String PARAMETER_END = ")";
+    public static final String EMBEDDED_START = "^([a-zA-Z0-9_-]+)[ ]*\\{(.*)";
+    public static final String EMBEDDED_END = "}";
 
     @Override
     public TemplateTree parse(String template) {
@@ -27,26 +26,26 @@ class ParserImpl implements Parser {
     public RootNode phase1(String template) {
         RootNode result = new RootNode();
         String current = template;
-        while(!current.isEmpty()) {
-            boolean startFound = false;
+        while (!current.isEmpty()) {
+            boolean startFound;
             String text = StringUtils.substringBefore(current, COMMENT_START);
-            if(!text.isEmpty()) {
+            if (!text.isEmpty()) {
                 result.add(new PlainTextNode(text));
-                if(text.contains(COMMENT_END)) {
+                if (text.contains(COMMENT_END)) {
                     throw new ParseException();
                 }
 
             }
-            if(current.contains(COMMENT_START)){
+            if (current.contains(COMMENT_START)) {
                 startFound = true;
                 current = StringUtils.substringAfter(current, COMMENT_START);
             } else {
                 break;
             }
-            if(current.isEmpty()) {
+            if (current.isEmpty()) {
                 break;
             }
-            if(current.contains(COMMENT_END) != startFound) {
+            if (current.contains(COMMENT_END) != startFound) {
                 throw new ParseException();
             }
             String markupText = StringUtils.substringBefore(current, COMMENT_END);
@@ -59,32 +58,40 @@ class ParserImpl implements Parser {
     public RootNode phase2(RootNode input) {
         RootNode result = new RootNode();
         NodeWithChildes currentRoot = result;
-        for(Node walker : input.getChildes()) {
-            if(walker instanceof PlainTextNode) {
+        for (Node walker : input.getChildes()) {
+            if (walker instanceof PlainTextNode) {
                 currentRoot.add(walker);
-            }
-            else if(walker instanceof MarkupNode) {
+            } else if (walker instanceof MarkupNode) {
                 String markup = ((MarkupNode) walker).getMarkup().trim();
-                while(!markup.isEmpty()) {
-                    Matcher startPattern = Pattern.compile(ELEMENT_TEMPLATE_START).matcher(markup);
-                    if(startPattern.matches()) {
-                        if(currentRoot instanceof ParameterNode) {
-                            throw new ParseException("Element " + startPattern.group(2) + " placed inside other element");
+                while (!markup.isEmpty()) {
+                    Matcher parameterStart = Pattern.compile(PARAMETER_START).matcher(markup);
+                    Matcher embeddedStart = Pattern.compile(EMBEDDED_START).matcher(markup);
+                    if (parameterStart.matches()) {
+                        if (currentRoot instanceof ParameterNode) {
+                            throw new ParseException("Element " + parameterStart.group(2) + " placed inside other element");
                         }
-                        ParameterNode parameterNode = new ParameterNode(startPattern.group(2), startPattern.group(1));
+                        ParameterNode parameterNode = new ParameterNode(parameterStart.group(2), parameterStart.group(1));
                         currentRoot.add(parameterNode);
                         currentRoot = parameterNode;
-                        markup = startPattern.group(3).trim();
-                    }else if(markup.startsWith(")")) {
+                        markup = parameterStart.group(3).trim();
+                    } else if (markup.startsWith(PARAMETER_END)) {
                         currentRoot = currentRoot.getParent();
-                        markup = StringUtils.substringAfter(markup, ELEMENT_TEMPLATE_END).trim();
-                    }else {
+                        markup = StringUtils.substringAfter(markup, PARAMETER_END).trim();
+                    } else if (embeddedStart.matches()) {
+                        EmbeddedNode node = new EmbeddedNode(embeddedStart.group(1));
+                        currentRoot.add(node);
+                        currentRoot = node;
+                        markup = embeddedStart.group(2).trim();
+                    } else if (markup.startsWith(EMBEDDED_END)) {
+                        currentRoot = currentRoot.getParent();
+                        markup = StringUtils.substringAfter(markup, EMBEDDED_END).trim();
+                    } else {
                         throw new ParseException("Unable to parse: " + markup);
                     }
                 }
             }
         }
-        if(!(currentRoot instanceof RootNode)) {
+        if (!(currentRoot instanceof RootNode)) {
             throw new ParseException("Parsing ends on nonroot node");
         }
         return result;
