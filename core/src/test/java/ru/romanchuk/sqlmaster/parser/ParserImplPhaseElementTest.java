@@ -1,4 +1,4 @@
-package ru.romanchuk.sqlmaster.parser.impl;
+package ru.romanchuk.sqlmaster.parser;
 
 import org.testng.annotations.Test;
 

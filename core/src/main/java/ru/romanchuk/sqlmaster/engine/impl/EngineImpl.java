@@ -2,9 +2,9 @@ package ru.romanchuk.sqlmaster.engine.impl;
 
 import ru.romanchuk.sqlmaster.engine.EngineException;
 import ru.romanchuk.sqlmaster.parser.Node;
-import ru.romanchuk.sqlmaster.parser.impl.ParameterNode;
-import ru.romanchuk.sqlmaster.parser.impl.PlainTextNode;
-import ru.romanchuk.sqlmaster.parser.impl.RootNode;
+import ru.romanchuk.sqlmaster.parser.tree.ParameterNode;
+import ru.romanchuk.sqlmaster.parser.tree.PlainTextNode;
+import ru.romanchuk.sqlmaster.parser.tree.RootNode;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,6 +1,6 @@
 package ru.romanchuk.sqlmaster.engine.impl;
 
-import ru.romanchuk.sqlmaster.parser.impl.PlainTextNode;
+import ru.romanchuk.sqlmaster.parser.tree.PlainTextNode;
 
 /**
  * @author Alexey Romanchuk

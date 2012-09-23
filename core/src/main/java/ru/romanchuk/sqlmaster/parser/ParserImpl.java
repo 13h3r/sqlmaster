@@ -1,10 +1,10 @@
-package ru.romanchuk.sqlmaster.parser.impl;
+package ru.romanchuk.sqlmaster.parser;
 
 import org.apache.commons.lang.StringUtils;
-import ru.romanchuk.sqlmaster.parser.Node;
-import ru.romanchuk.sqlmaster.parser.NodeWithChildes;
-import ru.romanchuk.sqlmaster.parser.Parser;
-import ru.romanchuk.sqlmaster.parser.TemplateTree;
+import ru.romanchuk.sqlmaster.parser.tree.MarkupNode;
+import ru.romanchuk.sqlmaster.parser.tree.ParameterNode;
+import ru.romanchuk.sqlmaster.parser.tree.PlainTextNode;
+import ru.romanchuk.sqlmaster.parser.tree.RootNode;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 /**
  * @author Alexey Romanchuk
  */
-public class ParserImpl implements Parser {
+class ParserImpl implements Parser {
 
     public static final String COMMENT_START = "/**";
     public static final String COMMENT_END = "*/";

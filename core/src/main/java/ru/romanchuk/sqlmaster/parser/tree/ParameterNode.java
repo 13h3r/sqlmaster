@@ -1,4 +1,4 @@
-package ru.romanchuk.sqlmaster.parser.impl;
+package ru.romanchuk.sqlmaster.parser.tree;
 
 import org.apache.commons.lang.StringUtils;
 

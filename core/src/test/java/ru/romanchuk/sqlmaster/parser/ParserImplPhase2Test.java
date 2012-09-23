@@ -1,7 +1,10 @@
-package ru.romanchuk.sqlmaster.parser.impl;
+package ru.romanchuk.sqlmaster.parser;
 
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+import ru.romanchuk.sqlmaster.parser.tree.ParameterNode;
+import ru.romanchuk.sqlmaster.parser.tree.PlainTextNode;
+import ru.romanchuk.sqlmaster.parser.tree.RootNode;
 
 import static org.testng.Assert.*;
 

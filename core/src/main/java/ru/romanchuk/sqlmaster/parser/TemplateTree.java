@@ -1,7 +1,7 @@
 package ru.romanchuk.sqlmaster.parser;
 
-import ru.romanchuk.sqlmaster.parser.impl.ParameterNode;
-import ru.romanchuk.sqlmaster.parser.impl.RootNode;
+import ru.romanchuk.sqlmaster.parser.tree.ParameterNode;
+import ru.romanchuk.sqlmaster.parser.tree.RootNode;
 
 import java.util.List;
 

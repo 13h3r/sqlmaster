@@ -1,6 +1,6 @@
 package ru.romanchuk.sqlmaster.engine.impl;
 
-import ru.romanchuk.sqlmaster.parser.impl.ParameterNode;
+import ru.romanchuk.sqlmaster.parser.tree.ParameterNode;
 
 /**
  * @author Alexey Romanchuk

@@ -1,8 +1,7 @@
-package ru.romanchuk.sqlmaster.parser.impl;
+package ru.romanchuk.sqlmaster.parser;
 
-import ru.romanchuk.sqlmaster.parser.Node;
-import ru.romanchuk.sqlmaster.parser.NodeWithChildes;
-import ru.romanchuk.sqlmaster.parser.TemplateTree;
+import ru.romanchuk.sqlmaster.parser.tree.ParameterNode;
+import ru.romanchuk.sqlmaster.parser.tree.RootNode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +9,7 @@ import java.util.List;
 /**
  * @author Alexey Romanchuk
  */
-public class TemplateTreeImpl implements TemplateTree {
+class TemplateTreeImpl implements TemplateTree {
     private RootNode tree;
 
     public TemplateTreeImpl(RootNode tree) {

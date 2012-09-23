@@ -1,7 +1,8 @@
-package ru.romanchuk.sqlmaster.parser.impl;
+package ru.romanchuk.sqlmaster.parser.tree;
 
 import org.apache.commons.lang.StringUtils;
 import ru.romanchuk.sqlmaster.parser.NodeWithChildes;
+import ru.romanchuk.sqlmaster.parser.ParseException;
 
 /**
  * @author Alexey Romanchuk
