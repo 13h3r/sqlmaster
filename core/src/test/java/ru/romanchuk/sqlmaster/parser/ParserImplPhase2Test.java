@@ -115,6 +115,16 @@ public class ParserImplPhase2Test {
     }
 
     @Test
+    public void testSimpleAnonEmbedded() {
+        RootNode t = p.phase2(p.phase1("select * from client where name = /**{}*/"));
+
+        RootNode ethalon = new RootNode();
+        ethalon.add(new PlainTextNode("select * from client where name = "));
+        ethalon.add(new EmbeddedNode(""));
+        assertEquals(t, ethalon);
+    }
+
+    @Test
     public void testSimpleEmbeddedSpaces() {
         RootNode t = p.phase2(p.phase1("select * from client where name = /** " +
                 "  join   {  \t  }  */"));
@@ -140,6 +150,30 @@ public class ParserImplPhase2Test {
         ethalon.add(j1);
         j1.add(new PlainTextNode("join t1\n"));
         EmbeddedNode j2 = new EmbeddedNode("j2");
+        j2.add(new PlainTextNode("join t2\n"));
+        EmbeddedNode j3 = new EmbeddedNode("j3");
+        j3.add(new PlainTextNode("join t3\n"));
+        j2.add(j3);
+        j1.add(j2);
+        assertEquals(t, ethalon);
+    }
+
+
+    @Test
+    public void testEmbedded3xAnonTimes() {
+        RootNode t = p.phase2(p.phase1("select * from t0\n" +
+                "/**{*/join t1\n" +
+                "/**{*/join t2\n" +
+                "/**j3{*/join t3\n" +
+                "/**}}}*/" +
+                ""
+        ));
+        RootNode ethalon = new RootNode();
+        ethalon.add(new PlainTextNode("select * from t0\n"));
+        EmbeddedNode j1 = new EmbeddedNode("");
+        ethalon.add(j1);
+        j1.add(new PlainTextNode("join t1\n"));
+        EmbeddedNode j2 = new EmbeddedNode("");
         j2.add(new PlainTextNode("join t2\n"));
         EmbeddedNode j3 = new EmbeddedNode("j3");
         j3.add(new PlainTextNode("join t3\n"));

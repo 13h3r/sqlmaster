@@ -18,6 +18,17 @@ public class EngineEmbedTest {
         Assert.assertEquals(EngineFacade.process(t), "select 1 from dual");
     }
 
+
+    @Test
+    public void test1EnableAnonymousSections() {
+        Template t = EngineFacade.createTemplate(
+                "select 1 from t/**{*/ where name = /**string name(*/'John'/**)}*/");
+        Assert.assertEquals(EngineFacade.process(t), "select 1 from t");
+
+        t.assignValue("name", "Kate");
+        Assert.assertEquals(EngineFacade.process(t), "select 1 from t where name = Kate");
+    }
+
     @Test
     public void test2Embedded() {
         Template t = EngineFacade.createTemplate("select 1 from /**table{*/dual/**}*/ and /**table{*/dual/**}*/");
@@ -35,7 +46,6 @@ public class EngineEmbedTest {
 
         t.assignValue("name", "Kate");
         Assert.assertEquals(EngineFacade.process(t), "select 1 from t where name = Kate");
-
     }
 
     @Test
@@ -53,9 +63,5 @@ public class EngineEmbedTest {
 
         t.assignValue("name", "Mike");
         Assert.assertEquals(EngineFacade.process(t), "select 1 from t where 1=1 and name = Mike and city = NY");
-
-
     }
-
-
 }

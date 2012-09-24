@@ -15,7 +15,7 @@ class ParserImpl implements Parser {
     public static final String COMMENT_END = "*/";
     public static final String PARAMETER_START = "^([a-z]+)[ ]+([a-zA-Z0-9_-]+)[ ]*\\((.*)";
     public static final String PARAMETER_END = ")";
-    public static final String EMBEDDED_START = "^([a-zA-Z0-9_-]+)[ ]*\\{(.*)";
+    public static final String EMBEDDED_START = "^([a-zA-Z0-9_-]*)[ ]*\\{(.*)";
     public static final String EMBEDDED_END = "}";
 
     @Override
