@@ -1,5 +1,7 @@
 package ru.romanchuk.sqlmaster.parser.tree;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
  * @author Alexey Romanchuk
  */
@@ -32,5 +34,13 @@ public class EmbeddedNode extends AbstractNodeWithChildes{
         int result = super.hashCode();
         result = 31 * result + (name != null ? name.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "EmbeddedNode{" +
+                "name='" + name + '\'' +
+                ", childrens='" + StringUtils.join(getChildes(), ",") + "\'" +
+                '}';
     }
 }
