@@ -60,5 +60,14 @@ public class EngineTest {
         Assert.assertEquals(result, "select 1 from t where name = Jane");
     }
 
+    @Test
+    public void test1Embedded() {
+        Template t = EngineFacade.createTemplate("select 1 from /**table{*/dual/**}*/");
+        Assert.assertEquals(EngineFacade.process(t), "select 1 from ");
+
+        t.embed("table");
+        Assert.assertEquals(EngineFacade.process(t), "select 1 from dual");
+    }
+
 
 }

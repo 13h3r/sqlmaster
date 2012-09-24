@@ -1,5 +1,6 @@
 package ru.romanchuk.sqlmaster.parser;
 
+import ru.romanchuk.sqlmaster.parser.tree.EmbeddedNode;
 import ru.romanchuk.sqlmaster.parser.tree.ParameterNode;
 import ru.romanchuk.sqlmaster.parser.tree.RootNode;
 
@@ -22,29 +23,31 @@ class TemplateTreeImpl implements TemplateTree {
     }
 
     @Override
-    public ParameterNode getParameterNode(final String name) {
-        final ParameterNode[] result = {null};
-        visit(getRootNode(), new TreeVisitor() {
-            @Override
-            public void visit(Node node) {
-                if (node instanceof ParameterNode) {
-                    if (((ParameterNode) node).getName().equals(name)) {
-                        result[0] = (ParameterNode) node;
-                    }
-                }
-            }
-        });
-        return result[0];
-    }
-
-    @Override
-    public List<ParameterNode> getParameters() {
+    public List<ParameterNode> getParameterNode(final String name) {
         final List<ParameterNode> result = new ArrayList<ParameterNode>();
         visit(getRootNode(), new TreeVisitor() {
             @Override
             public void visit(Node node) {
                 if (node instanceof ParameterNode) {
-                    result.add((ParameterNode) node);
+                    if (((ParameterNode) node).getName().equals(name)) {
+                        result.add((ParameterNode) node);
+                    }
+                }
+            }
+        });
+        return result;
+    }
+
+    @Override
+    public List<EmbeddedNode> getEmbeddedNode(final String name) {
+        final List<EmbeddedNode> result = new ArrayList<EmbeddedNode>();
+        visit(getRootNode(), new TreeVisitor() {
+            @Override
+            public void visit(Node node) {
+                if (node instanceof EmbeddedNode) {
+                    if (((EmbeddedNode) node).getName().equals(name)) {
+                        result.add((EmbeddedNode) node);
+                    }
                 }
             }
         });

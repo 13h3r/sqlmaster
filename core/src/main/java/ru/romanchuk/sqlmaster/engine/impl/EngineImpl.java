@@ -2,6 +2,7 @@ package ru.romanchuk.sqlmaster.engine.impl;
 
 import ru.romanchuk.sqlmaster.engine.EngineException;
 import ru.romanchuk.sqlmaster.parser.Node;
+import ru.romanchuk.sqlmaster.parser.tree.EmbeddedNode;
 import ru.romanchuk.sqlmaster.parser.tree.ParameterNode;
 import ru.romanchuk.sqlmaster.parser.tree.PlainTextNode;
 import ru.romanchuk.sqlmaster.parser.tree.RootNode;
@@ -19,6 +20,7 @@ public class EngineImpl {
         transformers.put(PlainTextNode.class, new PlainTextNodeTransformer());
         transformers.put(RootNode.class, new RootNodeTransformer());
         transformers.put(ParameterNode.class, new ParameterNodeTransformer());
+        transformers.put(EmbeddedNode.class, new EmbeddedNodeTransformer());
     }
 
     public static String processNode(Node node, TemplateState state) {
@@ -30,15 +32,6 @@ public class EngineImpl {
     }
 
     public String process(Template template) {
-        validateAllParametersPresent(template);
         return processNode(template.getTree().getRootNode(), template.getState());
-    }
-
-    private void validateAllParametersPresent(Template template) {
-        for(ParameterNode walker : template.getTree().getParameters()) {
-            if(template.getState().getAssignedValue(walker.getName()) == null) {
-                throw new EngineException("Parameter value " + walker.getName() + " is not set");
-            }
-        }
     }
 }

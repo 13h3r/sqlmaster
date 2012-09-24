@@ -33,6 +33,7 @@ public class ParserImplPhase2Test {
         // starts with )
         failWithParseException("select * from /**)test table ()*/ where 1 = 1");
     }
+
     @Test
     public void testUnfinishedEmbeddedMarkup() {
         // wrong number of words
@@ -41,6 +42,16 @@ public class ParserImplPhase2Test {
         failWithParseException("select * from /**test table {*/ where 1 = 1");
         // starts with )
         failWithParseException("select * from /** } test table {}*/ where 1 = 1");
+    }
+
+    @Test
+    public void testUnfinishedMixedMarkup() {
+        failWithParseException("select * from /**table {(}*/ where 1 = 1");
+        failWithParseException("select * from /**table {)}*/ where 1 = 1");
+        failWithParseException("select * from /**table {})*/ where 1 = 1");
+        failWithParseException("select * from /**table ()*/ where 1 = 1");
+        failWithParseException("select * from /**string table(}*/ where 1 = 1");
+        failWithParseException("select * from /**string table{)*/ where 1 = 1");
     }
 
     @Test

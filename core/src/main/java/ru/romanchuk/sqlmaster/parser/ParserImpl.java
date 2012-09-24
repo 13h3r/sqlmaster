@@ -75,6 +75,9 @@ class ParserImpl implements Parser {
                         currentRoot = parameterNode;
                         markup = parameterStart.group(3).trim();
                     } else if (markup.startsWith(PARAMETER_END)) {
+                        if(!(currentRoot instanceof ParameterNode)) {
+                            throw new ParseException("Incorrect ')' after " + currentRoot);
+                        }
                         currentRoot = currentRoot.getParent();
                         markup = StringUtils.substringAfter(markup, PARAMETER_END).trim();
                     } else if (embeddedStart.matches()) {
@@ -83,6 +86,9 @@ class ParserImpl implements Parser {
                         currentRoot = node;
                         markup = embeddedStart.group(2).trim();
                     } else if (markup.startsWith(EMBEDDED_END)) {
+                        if(!(currentRoot instanceof EmbeddedNode)) {
+                            throw new ParseException("Incorrect '}' after " + currentRoot);
+                        }
                         currentRoot = currentRoot.getParent();
                         markup = StringUtils.substringAfter(markup, EMBEDDED_END).trim();
                     } else {
