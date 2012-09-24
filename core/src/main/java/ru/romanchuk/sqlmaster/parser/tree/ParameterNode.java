@@ -1,4 +1,4 @@
-package ru.romanchuk.sqlmaster.parser.impl;
+package ru.romanchuk.sqlmaster.parser.tree;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -48,7 +48,7 @@ public class ParameterNode extends AbstractNodeWithChildes {
         return "ParameterNode(" +
                 "name='" + name + '\'' +
                 ", type='" + type + '\'' +
-                ", childes='" + StringUtils.join(getChildes(), ",") + "\'" +
+                ", childrens='" + StringUtils.join(getChildes(), ",") + "'" +
                 ')';
     }
 }

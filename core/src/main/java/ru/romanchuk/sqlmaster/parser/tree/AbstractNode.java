@@ -1,4 +1,4 @@
-package ru.romanchuk.sqlmaster.parser.impl;
+package ru.romanchuk.sqlmaster.parser.tree;
 
 import ru.romanchuk.sqlmaster.parser.Node;
 import ru.romanchuk.sqlmaster.parser.NodeWithChildes;

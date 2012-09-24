@@ -1,7 +1,8 @@
 package ru.romanchuk.sqlmaster.parser;
 
-import ru.romanchuk.sqlmaster.parser.impl.ParameterNode;
-import ru.romanchuk.sqlmaster.parser.impl.RootNode;
+import ru.romanchuk.sqlmaster.parser.tree.EmbeddedNode;
+import ru.romanchuk.sqlmaster.parser.tree.ParameterNode;
+import ru.romanchuk.sqlmaster.parser.tree.RootNode;
 
 import java.util.List;
 
@@ -11,8 +12,6 @@ import java.util.List;
 public interface TemplateTree {
     RootNode getRootNode();
 
-    ParameterNode getParameterNode(String name);
-
-    List<ParameterNode> getParameters();
-
+    List<ParameterNode> getParameterNode(String name);
+    List<EmbeddedNode> getEmbeddedNode(String name);
 }

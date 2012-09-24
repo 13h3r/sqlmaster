@@ -1,4 +1,4 @@
-package ru.romanchuk.sqlmaster.parser.impl;
+package ru.romanchuk.sqlmaster.parser.tree;
 
 /**
  * @author Alexey Romanchuk
