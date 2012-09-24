@@ -27,4 +27,35 @@ public class EngineEmbedTest {
         Assert.assertEquals(EngineFacade.process(t), "select 1 from dual and dual");
     }
 
+    @Test
+    public void testParameterAndEmbedded() {
+        Template t = EngineFacade.createTemplate(
+                "select 1 from t/**where{*/ where name = /**string name(*/'John'/**)}*/");
+        Assert.assertEquals(EngineFacade.process(t), "select 1 from t");
+
+        t.assignValue("name", "Kate");
+        Assert.assertEquals(EngineFacade.process(t), "select 1 from t where name = Kate");
+
+    }
+
+    @Test
+    public void testParameterAndEmbeddedInEmbedded() {
+        Template t = EngineFacade.createTemplate(
+                "select 1 from t/**where{*/ " +
+                        "where 1=1" +
+                        "/**name{*/ and name = /**string name(*/'John'/**)}*/" +
+                        "/**city{*/ and city = /**string city(*/'Nsk'/**)}}*/" +
+                        "");
+        Assert.assertEquals(EngineFacade.process(t), "select 1 from t");
+
+        t.assignValue("city", "NY");
+        Assert.assertEquals(EngineFacade.process(t), "select 1 from t where 1=1 and city = NY");
+
+        t.assignValue("name", "Mike");
+        Assert.assertEquals(EngineFacade.process(t), "select 1 from t where 1=1 and name = Mike and city = NY");
+
+
+    }
+
+
 }

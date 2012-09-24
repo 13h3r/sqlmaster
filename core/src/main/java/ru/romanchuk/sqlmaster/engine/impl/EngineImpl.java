@@ -2,6 +2,7 @@ package ru.romanchuk.sqlmaster.engine.impl;
 
 import ru.romanchuk.sqlmaster.engine.EngineException;
 import ru.romanchuk.sqlmaster.parser.Node;
+import ru.romanchuk.sqlmaster.parser.TemplateTree;
 import ru.romanchuk.sqlmaster.parser.tree.EmbeddedNode;
 import ru.romanchuk.sqlmaster.parser.tree.ParameterNode;
 import ru.romanchuk.sqlmaster.parser.tree.PlainTextNode;
@@ -32,6 +33,24 @@ public class EngineImpl {
     }
 
     public String process(Template template) {
-        return processNode(template.getTree().getRootNode(), template.getState());
+        TemplateState processState = new TemplateState(template.getState());
+        enableEmbeddedNodes(template.getTree(), processState);
+        return processNode(template.getTree().getRootNode(), processState);
     }
+
+    private void enableEmbeddedNodes(TemplateTree tree, TemplateState processState) {
+        for(String param : processState.getParameters().keySet()) {
+            for(ParameterNode pNode : tree.getParameterNode(param)) {
+                Node up = pNode.getParent();
+                while(!(up instanceof RootNode)) {
+                    if(up instanceof EmbeddedNode) {
+                        processState.embed(((EmbeddedNode) up).getName());
+                    }
+                    up = up.getParent();
+                }
+            }
+        }
+    }
+
+
 }

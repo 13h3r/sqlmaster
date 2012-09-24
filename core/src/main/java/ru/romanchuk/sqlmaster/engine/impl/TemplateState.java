@@ -14,6 +14,14 @@ public class TemplateState {
     private Map<String, Object> parameters = new HashMap<String, Object>();
     private Set<String> embedded = new HashSet<String>();
 
+    public TemplateState() {
+    }
+
+    public TemplateState(TemplateState state) {
+        parameters.putAll(state.parameters);
+        embedded.addAll(state.embedded);
+    }
+
     public void assignValue(String name, Object value) {
         if(parameters.containsKey(name)) {
             throw new EngineException("Key " + name + " already set");
@@ -33,4 +41,11 @@ public class TemplateState {
         return parameters.get(key);
     }
 
+    public Map<String, Object> getParameters() {
+        return parameters;
+    }
+
+    public Set<String> getEmbedded() {
+        return embedded;
+    }
 }
