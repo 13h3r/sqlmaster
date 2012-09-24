@@ -2,9 +2,11 @@ package ru.romanchuk.sqlmaster.engine.impl;
 
 import ru.romanchuk.sqlmaster.engine.EngineException;
 import ru.romanchuk.sqlmaster.parser.Node;
-import ru.romanchuk.sqlmaster.parser.impl.ParameterNode;
-import ru.romanchuk.sqlmaster.parser.impl.PlainTextNode;
-import ru.romanchuk.sqlmaster.parser.impl.RootNode;
+import ru.romanchuk.sqlmaster.parser.TemplateTree;
+import ru.romanchuk.sqlmaster.parser.tree.EmbeddedNode;
+import ru.romanchuk.sqlmaster.parser.tree.ParameterNode;
+import ru.romanchuk.sqlmaster.parser.tree.PlainTextNode;
+import ru.romanchuk.sqlmaster.parser.tree.RootNode;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,6 +21,7 @@ public class EngineImpl {
         transformers.put(PlainTextNode.class, new PlainTextNodeTransformer());
         transformers.put(RootNode.class, new RootNodeTransformer());
         transformers.put(ParameterNode.class, new ParameterNodeTransformer());
+        transformers.put(EmbeddedNode.class, new EmbeddedNodeTransformer());
     }
 
     public static String processNode(Node node, TemplateState state) {
@@ -30,15 +33,24 @@ public class EngineImpl {
     }
 
     public String process(Template template) {
-        validateAllParametersPresent(template);
-        return processNode(template.getTree().getRootNode(), template.getState());
+        TemplateState processState = new TemplateState(template.getState());
+        enableEmbeddedNodes(template.getTree(), processState);
+        return processNode(template.getTree().getRootNode(), processState);
     }
 
-    private void validateAllParametersPresent(Template template) {
-        for(ParameterNode walker : template.getTree().getParameters()) {
-            if(template.getState().getAssignedValue(walker.getName()) == null) {
-                throw new EngineException("Parameter value " + walker.getName() + " is not set");
+    private void enableEmbeddedNodes(TemplateTree tree, TemplateState processState) {
+        for(String param : processState.getParameters().keySet()) {
+            for(ParameterNode pNode : tree.getParameterNode(param)) {
+                Node up = pNode.getParent();
+                while(!(up instanceof RootNode)) {
+                    if(up instanceof EmbeddedNode) {
+                        processState.embed(((EmbeddedNode) up).getName());
+                    }
+                    up = up.getParent();
+                }
             }
         }
     }
+
+
 }

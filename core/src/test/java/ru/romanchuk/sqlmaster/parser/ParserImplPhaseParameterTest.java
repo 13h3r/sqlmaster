@@ -1,4 +1,4 @@
-package ru.romanchuk.sqlmaster.parser.impl;
+package ru.romanchuk.sqlmaster.parser;
 
 import org.testng.annotations.Test;
 
@@ -12,9 +12,9 @@ import static org.testng.Assert.assertTrue;
  * @author Alexey Romanchuk
  */
 @Test
-public class ParserImplPhaseElementTest {
+public class ParserImplPhaseParameterTest {
 
-    private final Pattern pattern = Pattern.compile(ParserImpl.ELEMENT_TEMPLATE_START);
+    private final Pattern pattern = Pattern.compile(ParserImpl.PARAMETER_START);
 
     @Test
     public void simple() {

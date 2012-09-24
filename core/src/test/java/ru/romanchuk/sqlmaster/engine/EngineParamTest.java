@@ -10,7 +10,7 @@ import static org.testng.Assert.fail;
 /**
  * @author Alexey Romanchuk
  */
-public class EngineTest {
+public class EngineParamTest {
 
     @Test
     public void emptyTemplate() {
@@ -59,6 +59,4 @@ public class EngineTest {
 
         Assert.assertEquals(result, "select 1 from t where name = Jane");
     }
-
-
 }
