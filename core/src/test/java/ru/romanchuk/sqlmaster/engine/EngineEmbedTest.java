@@ -3,10 +3,21 @@ package ru.romanchuk.sqlmaster.engine;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import static org.testng.Assert.fail;
+
 /**
  * @author Alexey Romanchuk
  */
 public class EngineEmbedTest {
+
+    @Test
+    public void testNoSuchNode() {
+        Template t = EngineFacade.createTemplate("1");
+        try {
+            t.enable("asdf");
+            fail();
+        } catch(EngineException e) {}
+    }
 
     @Test
     public void test1Embedded() {

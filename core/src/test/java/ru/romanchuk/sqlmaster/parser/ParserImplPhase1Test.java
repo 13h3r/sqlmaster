@@ -60,6 +60,12 @@ public class ParserImplPhase1Test {
         ethalon.add(new PlainTextNode(" test"));
         assertEquals(t, ethalon);
     }
+    @Test
+    public void testEmpty() {
+        RootNode t = p.phase1("");
+        RootNode ethalon = new RootNode();
+        assertEquals(t, ethalon);
+    }
 
     @Test
     public void notMarkup() {

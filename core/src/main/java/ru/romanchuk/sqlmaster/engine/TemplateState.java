@@ -46,8 +46,4 @@ public class TemplateState {
     public Map<String, Object> getParameters() {
         return parameters;
     }
-
-    public Set<String> getEmbedded() {
-        return embedded;
-    }
 }
