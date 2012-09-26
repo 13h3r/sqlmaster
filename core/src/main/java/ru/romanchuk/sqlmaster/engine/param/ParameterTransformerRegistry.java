@@ -19,26 +19,27 @@ public class ParameterTransformerRegistry {
 
     static {
         defaultRegistry = new ParameterTransformerRegistry();
-        defaultRegistry.register(new IntTransformer());
+        defaultRegistry.register(new NumberParameterTransformer());
         defaultRegistry.register(new QuotedStringTransformer());
+        defaultRegistry.register(new CollectionParameterTransformer(defaultRegistry));
     }
 
-    public ParameterTransformer findTransformer(ParameterType parameterType, Class klazz) {
+    public String transform(ParameterType parameterType, Object value) {
         Validate.notNull(parameterType);
-        Validate.notNull(klazz);
+        Validate.notNull(value);
         List<ParameterTransformer> result = new ArrayList<ParameterTransformer>();
         for (ParameterTransformer walker : transformers) {
-            if (walker.canTransform(parameterType, klazz)) {
+            if (walker.canTransform(parameterType, value.getClass())) {
                 result.add(walker);
             }
         }
         if (result.isEmpty()) {
-            throw new EngineException("Unable to find transformer for type " + parameterType + " from class " + klazz);
+            throw new EngineException("Unable to find transformer for type " + parameterType + " from class " + value.getClass());
         }
         if (result.size() > 1) {
-            throw new EngineException("Multiple transformers for type " + parameterType + " from class " + klazz);
+            throw new EngineException("Multiple transformers for type " + parameterType + " from class " + value.getClass());
         }
-        return result.get(0);
+        return result.get(0).transform(parameterType, value);
     }
 
     public void register(ParameterTransformer transformer) {

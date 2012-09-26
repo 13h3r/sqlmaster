@@ -6,10 +6,10 @@ import ru.romanchuk.sqlmaster.parser.tree.ParameterType;
 /**
  * @author Alexey Romanchuk
  */
-public class QuotedStringTransformer implements ParameterTransformer {
+public class NumberParameterTransformer implements ParameterTransformer {
     @Override
     public boolean canTransform(ParameterType parameterType, Class klazz) {
-        if (parameterType == ParameterType.STRING && klazz.equals(String.class)) {
+        if (parameterType == ParameterType.NUMBER && java.lang.Number.class.isAssignableFrom(klazz)) {
             return true;
         }
         return false;
@@ -18,8 +18,6 @@ public class QuotedStringTransformer implements ParameterTransformer {
     @Override
     public String transform(ParameterType parameterType, Object value) {
         Validate.notNull(value);
-        return "'" + value.toString() + "'";
+        return "" + value.toString();
     }
-
-
 }

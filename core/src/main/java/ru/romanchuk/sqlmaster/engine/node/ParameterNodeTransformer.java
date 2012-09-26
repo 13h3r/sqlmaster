@@ -2,7 +2,6 @@ package ru.romanchuk.sqlmaster.engine.node;
 
 import ru.romanchuk.sqlmaster.engine.EngineException;
 import ru.romanchuk.sqlmaster.engine.TemplateState;
-import ru.romanchuk.sqlmaster.engine.param.ParameterTransformer;
 import ru.romanchuk.sqlmaster.engine.param.ParameterTransformerRegistry;
 import ru.romanchuk.sqlmaster.parser.tree.ParameterNode;
 
@@ -16,9 +15,8 @@ public class ParameterNodeTransformer implements NodeTransformer<ParameterNode> 
         if (value == null) {
             throw new EngineException("Parameter " + node.getName() + " is not set");
         }
-        ParameterTransformer transformer = ParameterTransformerRegistry
+        return ParameterTransformerRegistry
                 .getDefault()
-                .findTransformer(node.getType(), value.getClass());
-        return transformer.transform(value);
+                .transform(node.getType(), value);
     }
 }

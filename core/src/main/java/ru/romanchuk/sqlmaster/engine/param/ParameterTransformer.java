@@ -7,5 +7,5 @@ import ru.romanchuk.sqlmaster.parser.tree.ParameterType;
  */
 public interface ParameterTransformer {
     boolean canTransform(ParameterType parameterType, Class klazz);
-    String transform(Object value);
+    String transform(ParameterType parameterType, Object value);
 }

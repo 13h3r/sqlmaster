@@ -1,5 +1,6 @@
 package ru.romanchuk.sqlmaster.engine.param;
 
+import com.google.common.collect.Lists;
 import org.testng.AssertJUnit;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -18,9 +19,7 @@ public class ParameterTransformerRegistryTest {
 
     @BeforeMethod
     public void setup() {
-        r = new ParameterTransformerRegistry();
-        r.register(new QuotedStringTransformer());
-        r.register(new IntTransformer());
+        r = ParameterTransformerRegistry.getDefault();
     }
 
     @Test
@@ -32,20 +31,21 @@ public class ParameterTransformerRegistryTest {
 
     @Test
     public void testNotFound() {
-        findShouldFails(ParameterType.INT, String.class);
+        findShouldFails(ParameterType.NUMBER, String.class);
         findShouldFails(ParameterType.STRING, Class.class);
         findShouldFails(ParameterType.STRING, Integer.class);
     }
 
     @Test
     public void testCorrectFind() {
-        assertEquals(r.findTransformer(ParameterType.INT, Integer.class).getClass(), IntTransformer.class);
-        assertEquals(r.findTransformer(ParameterType.STRING, String.class).getClass(), QuotedStringTransformer.class);
+        assertEquals(r.transform(ParameterType.NUMBER, 100), "100");
+        assertEquals(r.transform(ParameterType.STRING, "asdfa"), "'asdfa'");
+        assertEquals(r.transform(ParameterType.STRING, Lists.newArrayList("Mike", "Luke")), "'Mike','Luke'");
     }
 
     private void findShouldFails(ParameterType type, Class klazz) {
         try {
-            r.findTransformer(type, klazz);
+            r.transform(type, klazz);
             AssertJUnit.fail();
         } catch (EngineException e) {
         } catch (IllegalArgumentException a) {

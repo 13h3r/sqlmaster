@@ -5,7 +5,7 @@ package ru.romanchuk.sqlmaster.parser.tree;
  */
 public enum ParameterType {
     STRING("string"),
-    INT("int"),
+    NUMBER("number"),
     ;
     private String templateName;
 

@@ -92,14 +92,14 @@ public class ParserImplPhase2Test {
 
     @Test
     public void testTwoMarkupInOneComment() {
-        RootNode result = p.phase2(p.phase1("select /**string name(*/name/**) int order(*/order/**)*/"));
+        RootNode result = p.phase2(p.phase1("select /**string name(*/name/**) number order(*/order/**)*/"));
 
         RootNode ethalon = new RootNode();
         ethalon.add(new PlainTextNode("select "));
         ParameterNode p1 = new ParameterNode("name", ParameterType.STRING);
         ethalon.add(p1);
         p1.add(new PlainTextNode("name"));
-        ParameterNode p2 = new ParameterNode("order", ParameterType.INT);
+        ParameterNode p2 = new ParameterNode("order", ParameterType.NUMBER);
         ethalon.add(p2);
         p2.add(new PlainTextNode("order"));
 
