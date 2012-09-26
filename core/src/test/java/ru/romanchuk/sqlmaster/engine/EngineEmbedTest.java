@@ -14,8 +14,11 @@ public class EngineEmbedTest {
         Template t = EngineFacade.createTemplate("select 1 from /**table{*/dual/**}*/");
         Assert.assertEquals(EngineFacade.process(t), "select 1 from ");
 
-        t.embed("table");
+        t.enable("table");
         Assert.assertEquals(EngineFacade.process(t), "select 1 from dual");
+
+        t.enable("table", false);
+        Assert.assertEquals(EngineFacade.process(t), "select 1 from ");
     }
 
 
@@ -34,7 +37,7 @@ public class EngineEmbedTest {
         Template t = EngineFacade.createTemplate("select 1 from /**table{*/dual/**}*/ and /**table{*/dual/**}*/");
         Assert.assertEquals(EngineFacade.process(t), "select 1 from  and ");
 
-        t.embed("table");
+        t.enable("table");
         Assert.assertEquals(EngineFacade.process(t), "select 1 from dual and dual");
     }
 

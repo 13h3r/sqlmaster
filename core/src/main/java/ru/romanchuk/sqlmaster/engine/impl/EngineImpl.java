@@ -44,7 +44,7 @@ public class EngineImpl {
                 Node up = pNode.getParent();
                 while(!(up instanceof RootNode)) {
                     if(up instanceof EmbeddedNode) {
-                        processState.embed(((EmbeddedNode) up).getName());
+                        processState.enable(((EmbeddedNode) up).getName(), true);
                     }
                     up = up.getParent();
                 }

@@ -16,17 +16,21 @@ public class Template {
     }
 
     public void assignValue(String name, Object value) {
-        if(tree.getParameterNode(name).isEmpty()) {
+        if (tree.getParameterNode(name).isEmpty()) {
             throw new EngineException("Unable to find parameter " + name);
         }
         state.assignValue(name, value);
     }
 
-    public void embed(String name) {
-        if(tree.getEmbeddedNode(name).isEmpty()) {
+    public void enable(String name) {
+        enable(name, true);
+    }
+
+    public void enable(String name, boolean enable) {
+        if (tree.getEmbeddedNode(name).isEmpty()) {
             throw new EngineException("Unable to find embedded text " + name);
         }
-        state.embed(name);
+        state.enable(name, enable);
     }
 
     public TemplateTree getTree() {
