@@ -1,6 +1,10 @@
 package ru.romanchuk.sqlmaster.engine.impl;
 
 import ru.romanchuk.sqlmaster.engine.EngineException;
+import ru.romanchuk.sqlmaster.engine.impl.nodetransformer.EmbeddedNodeTransformer;
+import ru.romanchuk.sqlmaster.engine.impl.nodetransformer.ParameterNodeTransformer;
+import ru.romanchuk.sqlmaster.engine.impl.nodetransformer.PlainTextNodeTransformer;
+import ru.romanchuk.sqlmaster.engine.impl.nodetransformer.RootNodeTransformer;
 import ru.romanchuk.sqlmaster.parser.Node;
 import ru.romanchuk.sqlmaster.parser.TemplateTree;
 import ru.romanchuk.sqlmaster.parser.tree.EmbeddedNode;
@@ -51,6 +55,4 @@ public class EngineImpl {
             }
         }
     }
-
-
 }

@@ -70,7 +70,13 @@ class ParserImpl implements Parser {
                         if (currentRoot instanceof ParameterNode) {
                             throw new ParseException("Element " + parameterStart.group(2) + " placed inside other element");
                         }
-                        ParameterNode parameterNode = new ParameterNode(parameterStart.group(2), parameterStart.group(1));
+                        ParameterType type = ParameterType.getByTemplateName(parameterStart.group(1));
+                        if(type == null) {
+                            throw new ParseException("Unable to determine type " + parameterStart.group(1));
+                        }
+                        ParameterNode parameterNode = new ParameterNode(
+                                parameterStart.group(2),
+                                type);
                         currentRoot.add(parameterNode);
                         currentRoot = parameterNode;
                         markup = parameterStart.group(3).trim();
