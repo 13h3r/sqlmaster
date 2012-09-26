@@ -29,7 +29,7 @@ public class EngineEmbedTest {
         Assert.assertEquals(EngineFacade.process(t), "select 1 from t");
 
         t.assignValue("name", "Kate");
-        Assert.assertEquals(EngineFacade.process(t), "select 1 from t where name = Kate");
+        Assert.assertEquals(EngineFacade.process(t), "select 1 from t where name = 'Kate'");
     }
 
     @Test
@@ -48,7 +48,7 @@ public class EngineEmbedTest {
         Assert.assertEquals(EngineFacade.process(t), "select 1 from t");
 
         t.assignValue("name", "Kate");
-        Assert.assertEquals(EngineFacade.process(t), "select 1 from t where name = Kate");
+        Assert.assertEquals(EngineFacade.process(t), "select 1 from t where name = 'Kate'");
     }
 
     @Test
@@ -62,9 +62,9 @@ public class EngineEmbedTest {
         Assert.assertEquals(EngineFacade.process(t), "select 1 from t");
 
         t.assignValue("city", "NY");
-        Assert.assertEquals(EngineFacade.process(t), "select 1 from t where 1=1 and city = NY");
+        Assert.assertEquals(EngineFacade.process(t), "select 1 from t where 1=1 and city = 'NY'");
 
         t.assignValue("name", "Mike");
-        Assert.assertEquals(EngineFacade.process(t), "select 1 from t where 1=1 and name = Mike and city = NY");
+        Assert.assertEquals(EngineFacade.process(t), "select 1 from t where 1=1 and name = 'Mike' and city = 'NY'");
     }
 }

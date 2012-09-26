@@ -26,7 +26,7 @@ public class EngineParamTest {
         t.assignValue("table", "t");
         String result = EngineFacade.process(t);
 
-        Assert.assertEquals(result, "select 1 from t");
+        Assert.assertEquals(result, "select 1 from 't'");
     }
 
     @Test
@@ -45,7 +45,7 @@ public class EngineParamTest {
                 "select 1 from /**string table(*/dual/**)*/" +
                         " join /**string table(*/dual/**)*/");
         t.assignValue("table", "test1");
-        assertEquals("select 1 from test1 join test1", EngineFacade.process(t));
+        assertEquals("select 1 from 'test1' join 'test1'", EngineFacade.process(t));
     }
 
 
@@ -57,6 +57,6 @@ public class EngineParamTest {
         t.assignValue("name", "Jane");
         String result = EngineFacade.process(t);
 
-        Assert.assertEquals(result, "select 1 from t where name = Jane");
+        Assert.assertEquals(result, "select 1 from 't' where name = 'Jane'");
     }
 }
