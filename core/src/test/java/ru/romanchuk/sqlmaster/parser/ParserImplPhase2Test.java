@@ -2,9 +2,15 @@ package ru.romanchuk.sqlmaster.parser;
 
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import ru.romanchuk.sqlmaster.parser.tree.*;
+import ru.romanchuk.sqlmaster.parser.tree.EmbeddedNode;
+import ru.romanchuk.sqlmaster.parser.tree.ParameterNode;
+import ru.romanchuk.sqlmaster.parser.tree.ParameterType;
+import ru.romanchuk.sqlmaster.parser.tree.PlainTextNode;
+import ru.romanchuk.sqlmaster.parser.tree.RootNode;
 
-import static org.testng.Assert.*;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.fail;
 
 /**
  * @author Alexey Romanchuk

@@ -6,7 +6,9 @@ import ru.romanchuk.sqlmaster.parser.tree.MarkupNode;
 import ru.romanchuk.sqlmaster.parser.tree.PlainTextNode;
 import ru.romanchuk.sqlmaster.parser.tree.RootNode;
 
-import static org.testng.Assert.*;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.fail;
 
 /**
  * @author Alexey Romanchuk

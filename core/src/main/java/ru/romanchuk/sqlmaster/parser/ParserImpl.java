@@ -1,7 +1,12 @@
 package ru.romanchuk.sqlmaster.parser;
 
 import org.apache.commons.lang.StringUtils;
-import ru.romanchuk.sqlmaster.parser.tree.*;
+import ru.romanchuk.sqlmaster.parser.tree.EmbeddedNode;
+import ru.romanchuk.sqlmaster.parser.tree.MarkupNode;
+import ru.romanchuk.sqlmaster.parser.tree.ParameterNode;
+import ru.romanchuk.sqlmaster.parser.tree.ParameterType;
+import ru.romanchuk.sqlmaster.parser.tree.PlainTextNode;
+import ru.romanchuk.sqlmaster.parser.tree.RootNode;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
