@@ -1,6 +1,4 @@
-package ru.romanchuk.sqlmaster.engine.impl;
-
-import ru.romanchuk.sqlmaster.engine.EngineException;
+package ru.romanchuk.sqlmaster.engine;
 
 import java.util.HashMap;
 import java.util.HashSet;

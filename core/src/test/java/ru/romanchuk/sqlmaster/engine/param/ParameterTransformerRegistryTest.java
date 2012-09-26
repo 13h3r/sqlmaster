@@ -1,4 +1,4 @@
-package ru.romanchuk.sqlmaster.engine.impl.paramtransformer;
+package ru.romanchuk.sqlmaster.engine.param;
 
 import org.testng.AssertJUnit;
 import org.testng.annotations.BeforeMethod;
@@ -19,7 +19,7 @@ public class ParameterTransformerRegistryTest {
     @BeforeMethod
     public void setup() {
         r = new ParameterTransformerRegistry();
-        r.register(new QuotedStringTranformer());
+        r.register(new QuotedStringTransformer());
         r.register(new IntTransformer());
     }
 
@@ -40,7 +40,7 @@ public class ParameterTransformerRegistryTest {
     @Test
     public void testCorrectFind() {
         assertEquals(r.findTransformer(ParameterType.INT, Integer.class).getClass(), IntTransformer.class);
-        assertEquals(r.findTransformer(ParameterType.STRING, String.class).getClass(), QuotedStringTranformer.class);
+        assertEquals(r.findTransformer(ParameterType.STRING, String.class).getClass(), QuotedStringTransformer.class);
     }
 
     private void findShouldFails(ParameterType type, Class klazz) {

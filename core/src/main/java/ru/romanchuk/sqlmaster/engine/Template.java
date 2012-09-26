@@ -1,6 +1,5 @@
-package ru.romanchuk.sqlmaster.engine.impl;
+package ru.romanchuk.sqlmaster.engine;
 
-import ru.romanchuk.sqlmaster.engine.EngineException;
 import ru.romanchuk.sqlmaster.parser.TemplateTree;
 
 /**

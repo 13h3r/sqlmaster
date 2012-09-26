@@ -2,7 +2,6 @@ package ru.romanchuk.sqlmaster.engine;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import ru.romanchuk.sqlmaster.engine.impl.Template;
 
 /**
  * @author Alexey Romanchuk

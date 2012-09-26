@@ -1,4 +1,4 @@
-package ru.romanchuk.sqlmaster.engine.impl.paramtransformer;
+package ru.romanchuk.sqlmaster.engine.param;
 
 import org.apache.commons.lang.Validate;
 import ru.romanchuk.sqlmaster.engine.EngineException;
@@ -20,7 +20,7 @@ public class ParameterTransformerRegistry {
     static {
         defaultRegistry = new ParameterTransformerRegistry();
         defaultRegistry.register(new IntTransformer());
-        defaultRegistry.register(new QuotedStringTranformer());
+        defaultRegistry.register(new QuotedStringTransformer());
     }
 
     public ParameterTransformer findTransformer(ParameterType parameterType, Class klazz) {

@@ -1,4 +1,4 @@
-package ru.romanchuk.sqlmaster.engine.impl.paramtransformer;
+package ru.romanchuk.sqlmaster.engine.param;
 
 import ru.romanchuk.sqlmaster.parser.tree.ParameterType;
 

@@ -1,14 +1,14 @@
-package ru.romanchuk.sqlmaster.engine.impl.paramtransformer;
+package ru.romanchuk.sqlmaster.engine.param;
 
 import ru.romanchuk.sqlmaster.parser.tree.ParameterType;
 
 /**
  * @author Alexey Romanchuk
  */
-public class QuotedStringTranformer implements ParameterTransformer {
+public class IntTransformer implements ParameterTransformer {
     @Override
     public boolean canTransform(ParameterType parameterType, Class klazz) {
-        if (parameterType == ParameterType.STRING && klazz.equals(String.class)) {
+        if (parameterType == ParameterType.INT && Number.class.isAssignableFrom(klazz)) {
             return true;
         }
         return false;
@@ -16,8 +16,6 @@ public class QuotedStringTranformer implements ParameterTransformer {
 
     @Override
     public String transform(Object value) {
-        return "'" + value.toString() + "'";
+        return "" + ((Number) value).intValue();
     }
-
-
 }

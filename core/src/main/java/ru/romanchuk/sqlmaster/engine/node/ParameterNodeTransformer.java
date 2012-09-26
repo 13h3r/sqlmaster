@@ -1,9 +1,9 @@
-package ru.romanchuk.sqlmaster.engine.impl.nodetransformer;
+package ru.romanchuk.sqlmaster.engine.node;
 
 import ru.romanchuk.sqlmaster.engine.EngineException;
-import ru.romanchuk.sqlmaster.engine.impl.TemplateState;
-import ru.romanchuk.sqlmaster.engine.impl.paramtransformer.ParameterTransformer;
-import ru.romanchuk.sqlmaster.engine.impl.paramtransformer.ParameterTransformerRegistry;
+import ru.romanchuk.sqlmaster.engine.TemplateState;
+import ru.romanchuk.sqlmaster.engine.param.ParameterTransformer;
+import ru.romanchuk.sqlmaster.engine.param.ParameterTransformerRegistry;
 import ru.romanchuk.sqlmaster.parser.tree.ParameterNode;
 
 /**

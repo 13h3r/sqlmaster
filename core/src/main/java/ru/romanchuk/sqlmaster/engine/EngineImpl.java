@@ -1,7 +1,6 @@
-package ru.romanchuk.sqlmaster.engine.impl;
+package ru.romanchuk.sqlmaster.engine;
 
-import ru.romanchuk.sqlmaster.engine.EngineException;
-import ru.romanchuk.sqlmaster.engine.impl.nodetransformer.*;
+import ru.romanchuk.sqlmaster.engine.node.*;
 import ru.romanchuk.sqlmaster.parser.Node;
 import ru.romanchuk.sqlmaster.parser.TemplateTree;
 import ru.romanchuk.sqlmaster.parser.tree.EmbeddedNode;
