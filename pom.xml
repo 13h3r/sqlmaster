@@ -4,10 +4,29 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>ru.romanchuk.sqlmaster</groupId>
-    <artifactId>sqlmaster</artifactId>
-    <version>1.0</version>
+    <groupId>com.github.13h3r.sqlmaster</groupId>
+    <artifactId>parent</artifactId>
+    <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
+    <parent>
+        <groupId>org.sonatype.oss</groupId>
+        <artifactId>oss-parent</artifactId>
+        <version>7</version>
+    </parent>
+    <name>SQLMaster project</name>
+    <description>SQLMaster project</description>
+    <url>https://github.com/13h3r/sqlmaster</url>
+    <developers>
+        <developer>
+            <name>Alexey Romanchuk</name>
+            <email>alexey.romanchuk@gmail.com</email>
+        </developer>
+    </developers>
+    <scm>
+        <connection>scm:git:git@github.com:13h3r/sqlmaster.git</connection>
+        <developerConnection>scm:git:git@github.com:13h3r/sqlmaster.git</developerConnection>
+        <url>git@github.com:13h3r/sqlmaster.git</url>
+    </scm>
 
     <modules>
         <module>core</module>
