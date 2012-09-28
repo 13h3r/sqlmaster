@@ -4,10 +4,13 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import ru.romanchuk.sqlmaster.parser.tree.EmbeddedNode;
 import ru.romanchuk.sqlmaster.parser.tree.ParameterNode;
+import ru.romanchuk.sqlmaster.parser.tree.ParameterType;
 import ru.romanchuk.sqlmaster.parser.tree.PlainTextNode;
 import ru.romanchuk.sqlmaster.parser.tree.RootNode;
 
-import static org.testng.Assert.*;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.fail;
 
 /**
  * @author Alexey Romanchuk
@@ -45,6 +48,11 @@ public class ParserImplPhase2Test {
     }
 
     @Test
+    public void testUnknownType() {
+        failWithParseException("select * from /**strange type()*/ where 1 = 1");
+    }
+
+    @Test
     public void testUnfinishedMixedMarkup() {
         failWithParseException("select * from /**table {(}*/ where 1 = 1");
         failWithParseException("select * from /**table {)}*/ where 1 = 1");
@@ -60,7 +68,7 @@ public class ParserImplPhase2Test {
 
         RootNode ethalon = new RootNode();
         ethalon.add(new PlainTextNode("select * from client where name = "));
-        ParameterNode p1 = new ParameterNode("name", "string");
+        ParameterNode p1 = new ParameterNode("name", ParameterType.STRING);
         p1.add(new PlainTextNode("'Abdul Jamal'"));
         ethalon.add(p1);
         assertEquals(t, ethalon);
@@ -77,7 +85,7 @@ public class ParserImplPhase2Test {
 
         RootNode ethalon = new RootNode();
         ethalon.add(new PlainTextNode("select * from client where name = "));
-        ethalon.add(new ParameterNode("name", "string"));
+        ethalon.add(new ParameterNode("name", ParameterType.STRING));
         assertEquals(t, ethalon);
     }
 
@@ -90,14 +98,14 @@ public class ParserImplPhase2Test {
 
     @Test
     public void testTwoMarkupInOneComment() {
-        RootNode result = p.phase2(p.phase1("select /**string name(*/name/**) int order(*/order/**)*/"));
+        RootNode result = p.phase2(p.phase1("select /**string name(*/name/**) number order(*/order/**)*/"));
 
         RootNode ethalon = new RootNode();
         ethalon.add(new PlainTextNode("select "));
-        ParameterNode p1 = new ParameterNode("name", "string");
+        ParameterNode p1 = new ParameterNode("name", ParameterType.STRING);
         ethalon.add(p1);
         p1.add(new PlainTextNode("name"));
-        ParameterNode p2 = new ParameterNode("order", "int");
+        ParameterNode p2 = new ParameterNode("order", ParameterType.NUMBER);
         ethalon.add(p2);
         p2.add(new PlainTextNode("order"));
 

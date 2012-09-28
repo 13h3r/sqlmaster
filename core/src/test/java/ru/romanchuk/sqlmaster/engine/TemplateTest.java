@@ -1,7 +1,6 @@
 package ru.romanchuk.sqlmaster.engine;
 
 import org.testng.annotations.Test;
-import ru.romanchuk.sqlmaster.engine.impl.Template;
 
 import static org.testng.Assert.fail;
 

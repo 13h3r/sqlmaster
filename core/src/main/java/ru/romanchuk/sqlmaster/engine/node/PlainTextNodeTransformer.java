@@ -1,5 +1,6 @@
-package ru.romanchuk.sqlmaster.engine.impl;
+package ru.romanchuk.sqlmaster.engine.node;
 
+import ru.romanchuk.sqlmaster.engine.TemplateState;
 import ru.romanchuk.sqlmaster.parser.tree.PlainTextNode;
 
 /**

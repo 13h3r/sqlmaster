@@ -1,6 +1,10 @@
-package ru.romanchuk.sqlmaster.engine.impl;
+package ru.romanchuk.sqlmaster.engine;
 
-import ru.romanchuk.sqlmaster.engine.EngineException;
+import ru.romanchuk.sqlmaster.engine.node.EmbeddedNodeTransformer;
+import ru.romanchuk.sqlmaster.engine.node.NodeTransformer;
+import ru.romanchuk.sqlmaster.engine.node.ParameterNodeTransformer;
+import ru.romanchuk.sqlmaster.engine.node.PlainTextNodeTransformer;
+import ru.romanchuk.sqlmaster.engine.node.RootNodeTransformer;
 import ru.romanchuk.sqlmaster.parser.Node;
 import ru.romanchuk.sqlmaster.parser.TemplateTree;
 import ru.romanchuk.sqlmaster.parser.tree.EmbeddedNode;
@@ -44,13 +48,11 @@ public class EngineImpl {
                 Node up = pNode.getParent();
                 while(!(up instanceof RootNode)) {
                     if(up instanceof EmbeddedNode) {
-                        processState.embed(((EmbeddedNode) up).getName());
+                        processState.enable(((EmbeddedNode) up).getName(), true);
                     }
                     up = up.getParent();
                 }
             }
         }
     }
-
-
 }

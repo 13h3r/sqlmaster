@@ -2,7 +2,8 @@ package ru.romanchuk.sqlmaster.engine;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import ru.romanchuk.sqlmaster.engine.impl.Template;
+
+import static org.testng.Assert.fail;
 
 /**
  * @author Alexey Romanchuk
@@ -10,12 +11,24 @@ import ru.romanchuk.sqlmaster.engine.impl.Template;
 public class EngineEmbedTest {
 
     @Test
+    public void testNoSuchNode() {
+        Template t = EngineFacade.createTemplate("1");
+        try {
+            t.enable("asdf");
+            fail();
+        } catch(EngineException e) {}
+    }
+
+    @Test
     public void test1Embedded() {
         Template t = EngineFacade.createTemplate("select 1 from /**table{*/dual/**}*/");
         Assert.assertEquals(EngineFacade.process(t), "select 1 from ");
 
-        t.embed("table");
+        t.enable("table");
         Assert.assertEquals(EngineFacade.process(t), "select 1 from dual");
+
+        t.enable("table", false);
+        Assert.assertEquals(EngineFacade.process(t), "select 1 from ");
     }
 
 
@@ -26,7 +39,7 @@ public class EngineEmbedTest {
         Assert.assertEquals(EngineFacade.process(t), "select 1 from t");
 
         t.assignValue("name", "Kate");
-        Assert.assertEquals(EngineFacade.process(t), "select 1 from t where name = Kate");
+        Assert.assertEquals(EngineFacade.process(t), "select 1 from t where name = 'Kate'");
     }
 
     @Test
@@ -34,7 +47,7 @@ public class EngineEmbedTest {
         Template t = EngineFacade.createTemplate("select 1 from /**table{*/dual/**}*/ and /**table{*/dual/**}*/");
         Assert.assertEquals(EngineFacade.process(t), "select 1 from  and ");
 
-        t.embed("table");
+        t.enable("table");
         Assert.assertEquals(EngineFacade.process(t), "select 1 from dual and dual");
     }
 
@@ -45,7 +58,7 @@ public class EngineEmbedTest {
         Assert.assertEquals(EngineFacade.process(t), "select 1 from t");
 
         t.assignValue("name", "Kate");
-        Assert.assertEquals(EngineFacade.process(t), "select 1 from t where name = Kate");
+        Assert.assertEquals(EngineFacade.process(t), "select 1 from t where name = 'Kate'");
     }
 
     @Test
@@ -59,9 +72,9 @@ public class EngineEmbedTest {
         Assert.assertEquals(EngineFacade.process(t), "select 1 from t");
 
         t.assignValue("city", "NY");
-        Assert.assertEquals(EngineFacade.process(t), "select 1 from t where 1=1 and city = NY");
+        Assert.assertEquals(EngineFacade.process(t), "select 1 from t where 1=1 and city = 'NY'");
 
         t.assignValue("name", "Mike");
-        Assert.assertEquals(EngineFacade.process(t), "select 1 from t where 1=1 and name = Mike and city = NY");
+        Assert.assertEquals(EngineFacade.process(t), "select 1 from t where 1=1 and name = 'Mike' and city = 'NY'");
     }
 }

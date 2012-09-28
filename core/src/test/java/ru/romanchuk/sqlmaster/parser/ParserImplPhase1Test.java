@@ -6,7 +6,9 @@ import ru.romanchuk.sqlmaster.parser.tree.MarkupNode;
 import ru.romanchuk.sqlmaster.parser.tree.PlainTextNode;
 import ru.romanchuk.sqlmaster.parser.tree.RootNode;
 
-import static org.testng.Assert.*;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.fail;
 
 /**
  * @author Alexey Romanchuk
@@ -56,6 +58,12 @@ public class ParserImplPhase1Test {
         RootNode ethalon = new RootNode();
         ethalon.add(new MarkupNode("string table()"));
         ethalon.add(new PlainTextNode(" test"));
+        assertEquals(t, ethalon);
+    }
+    @Test
+    public void testEmpty() {
+        RootNode t = p.phase1("");
+        RootNode ethalon = new RootNode();
         assertEquals(t, ethalon);
     }
 

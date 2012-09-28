@@ -1,6 +1,4 @@
-package ru.romanchuk.sqlmaster.engine.impl;
-
-import ru.romanchuk.sqlmaster.engine.EngineException;
+package ru.romanchuk.sqlmaster.engine;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -23,14 +21,18 @@ public class TemplateState {
     }
 
     public void assignValue(String name, Object value) {
-        if(parameters.containsKey(name)) {
+        if (parameters.containsKey(name)) {
             throw new EngineException("Key " + name + " already set");
         }
         parameters.put(name, value);
     }
 
-    public void embed(String name) {
-        embedded.add(name);
+    public void enable(String name, boolean enable) {
+        if (enable) {
+            embedded.add(name);
+        } else {
+            embedded.remove(name);
+        }
     }
 
     public boolean isEmbed(String name) {
@@ -43,9 +45,5 @@ public class TemplateState {
 
     public Map<String, Object> getParameters() {
         return parameters;
-    }
-
-    public Set<String> getEmbedded() {
-        return embedded;
     }
 }

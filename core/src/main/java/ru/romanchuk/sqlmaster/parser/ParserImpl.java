@@ -1,7 +1,12 @@
 package ru.romanchuk.sqlmaster.parser;
 
 import org.apache.commons.lang.StringUtils;
-import ru.romanchuk.sqlmaster.parser.tree.*;
+import ru.romanchuk.sqlmaster.parser.tree.EmbeddedNode;
+import ru.romanchuk.sqlmaster.parser.tree.MarkupNode;
+import ru.romanchuk.sqlmaster.parser.tree.ParameterNode;
+import ru.romanchuk.sqlmaster.parser.tree.ParameterType;
+import ru.romanchuk.sqlmaster.parser.tree.PlainTextNode;
+import ru.romanchuk.sqlmaster.parser.tree.RootNode;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -70,7 +75,13 @@ class ParserImpl implements Parser {
                         if (currentRoot instanceof ParameterNode) {
                             throw new ParseException("Element " + parameterStart.group(2) + " placed inside other element");
                         }
-                        ParameterNode parameterNode = new ParameterNode(parameterStart.group(2), parameterStart.group(1));
+                        ParameterType type = ParameterType.getByTemplateName(parameterStart.group(1));
+                        if(type == null) {
+                            throw new ParseException("Unable to determine type " + parameterStart.group(1));
+                        }
+                        ParameterNode parameterNode = new ParameterNode(
+                                parameterStart.group(2),
+                                type);
                         currentRoot.add(parameterNode);
                         currentRoot = parameterNode;
                         markup = parameterStart.group(3).trim();
