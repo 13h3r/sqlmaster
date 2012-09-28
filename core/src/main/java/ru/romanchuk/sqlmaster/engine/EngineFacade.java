@@ -1,7 +1,5 @@
 package ru.romanchuk.sqlmaster.engine;
 
-import ru.romanchuk.sqlmaster.engine.impl.EngineImpl;
-import ru.romanchuk.sqlmaster.engine.impl.Template;
 import ru.romanchuk.sqlmaster.parser.ParserFacade;
 
 /**

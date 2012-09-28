@@ -7,9 +7,9 @@ import org.apache.commons.lang.StringUtils;
  */
 public class ParameterNode extends AbstractNodeWithChildes {
     private String name;
-    private String type;
+    private ParameterType type;
 
-    public ParameterNode(String name, String type) {
+    public ParameterNode(String name, ParameterType type) {
         this.name = name;
         this.type = type;
     }
@@ -18,7 +18,7 @@ public class ParameterNode extends AbstractNodeWithChildes {
         return name;
     }
 
-    public String getType() {
+    public ParameterType getType() {
         return type;
     }
 
