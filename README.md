@@ -5,13 +5,13 @@ SQLMaster is sql template engine that provides SQL valid templates. This allows 
 Here it is:
 
 ```sql
-select * from client where name = /**string name(*/'John'/**)*/
+select * from client where name = /** string name(*/'John'/**)*/
 ```
 
 You can copy-paste it to your favorite sql editor. Also this template contains markup information and you can generate sql by specifying parameter values
 
 ```java
-Template t = Engine.load("select * from client where name = /**string name(*/'John'/**)*/");
+Template t = Engine.load("select * from client where name = /** string name(*/'John'/**)*/");
 t.assignValue("name", "Kate");
 ```
 
@@ -29,7 +29,7 @@ Template is plain SQL and markup placed inside comments.
 Parameters is markup element for parameter values substitutions. Here it is typical usage
 
 ```sql
-select * from client where name = /**string client(*/'John'/**)*/
+select * from client where name = /** string client(*/'John'/**)*/
 ```
 
 Each parameter have name and type. In example above name is "client" and type is "string". Name used to identify parameter. Type is SQL type used to control type values at runtime.
