@@ -50,7 +50,7 @@ Template t = Engine.load(templateText);
 To generate template simple call `process` method of `Template`
 
 ## Parameters
-Parameters is markup element for parameter values substitutions. Here it is typical usage
+Parameter is a markup element for parameter values substitution. Here it is typical usage:
 
 ```sql
 select * from client where name = /** string client(*/'John'/**)*/
@@ -66,13 +66,16 @@ template.assignValue("client", "Mike")
 
 You can place multiple parameters with same name in template. When you assign value for such parameters all occurences will be rendered with given value.
 
+If parameter should be rendered and no value assigned to it exception occurs.
+
+Parameters can contains only plaintext inside of them.
+
 ### Default values
-Parameter may contains plaintext inside it to provide some kind of 'default values'. These values used to simplify work in SQL editor and will be removed in time of template procesing. These two templates are equivalent:
+Parameter may contains plaintext inside it to provide 'default values'. These values used to simplify work in SQL editor and will be removed in time of template rendering. These two templates are equivalent:
 
 ```sql
 select * from client where name = /** string client(*/'John'/**)*/
 ```
-
 
 ```sql
 select * from client where name = /** string client()*/
@@ -87,10 +90,27 @@ from client c
 /** fullInfo{*/inner join client_info ci on ci.client_id = c.id /**}*/
 ```
 
-Embedded text may have name to 
+By default embedded text is not rendered. There are two ways to render embedded text:
+- explicit call of `enable` method
+- cascade enable (read bellow)
 
-### Anonymous embedded text
+Embedded text can contains another embedded text and parameters.
 
+## Cascade enable
+Most case when you need embedded text is options where clause or optional joins. Both of them should be enabled only when you set value of parameter. Here it is typical usage:
+
+```sql
+select * from client c
+/** additionalInfo{*/ inner join client_info ci on ci.client_id = c.id /**}*/
+where c.name = /** string name(*/'john'/**)*/
+/** additionalInfo{*/ and ci.address = /** string address(*/'Novosibirsk'/**)}*/
+```
+Here you can see two parameters - `name` and `address`. `address` is placed inside embedded text
+
+## Anonymous embedded text
+
+
+## Tree
 
 ## Cascade activation
 
