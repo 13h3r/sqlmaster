@@ -75,4 +75,3 @@ template.assignValue("client", "Mike")
 ## Type parameters
 
 # Best practices
-
