@@ -13,7 +13,7 @@ You can copy-paste it to your favorite sql editor. Also this template contains m
 ```java
 Template t = Engine.load("select * from client where name = /** string name(*/'John'/**)*/");
 t.assignValue("name", "Kate");
-t.process();
+System.out.println(t.process());
 ```
 
 and the result is
