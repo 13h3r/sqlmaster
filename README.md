@@ -22,6 +22,33 @@ and the result is
 select * from client where name = 'Kate'
 ```
 
+## Maven
+Add repository
+
+```xml
+<repository>
+    <id>sonatype-nexus-snapshots</id>
+    <name>Sonatype Nexus Snapshots</name>
+    <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+    <releases>
+        <enabled>true</enabled>
+    </releases>
+    <snapshots>
+        <enabled>true</enabled>
+    </snapshots>
+</repository>
+```
+
+and dependency
+
+```xml
+<dependency>
+    <groupId>com.github.13h3r.sqlmaster</groupId>
+    <artifactId>core</artifactId>
+    <version>1.0-SNAPSHOT</version>
+</dependency>
+```
+
 # Concepts
 
 ## Syntax
