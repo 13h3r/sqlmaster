@@ -8,6 +8,7 @@ import ru.romanchuk.sqlmaster.parser.tree.ParameterType;
 import ru.romanchuk.sqlmaster.parser.tree.PlainTextNode;
 import ru.romanchuk.sqlmaster.parser.tree.RootNode;
 
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -25,7 +26,7 @@ class ParserImpl implements Parser {
 
     @Override
     public TemplateTree parse(String template) {
-        return new TemplateTreeImpl(phase2(phase1(template)));
+        return phase2(phase1(template));
     }
 
     public RootNode phase1(String template) {
@@ -60,9 +61,9 @@ class ParserImpl implements Parser {
         return result;
     }
 
-    public RootNode phase2(RootNode input) {
-        RootNode result = new RootNode();
-        NodeWithChildes currentRoot = result;
+    public TemplateTreeImpl phase2(RootNode input) {
+        TemplateTreeImpl result = new TemplateTreeImpl(new RootNode());
+        NodeWithChildes currentRoot = result.getRootNode();
         for (Node walker : input.getChildes()) {
             if (walker instanceof PlainTextNode) {
                 currentRoot.add(walker);
@@ -72,21 +73,26 @@ class ParserImpl implements Parser {
                     Matcher parameterStart = Pattern.compile(PARAMETER_START).matcher(markup);
                     Matcher embeddedStart = Pattern.compile(EMBEDDED_START).matcher(markup);
                     if (parameterStart.matches()) {
+                        String name = parameterStart.group(2);
                         if (currentRoot instanceof ParameterNode) {
-                            throw new ParseException("Element " + parameterStart.group(2) + " placed inside other element");
+                            throw new ParseException("Element " + name + " placed inside other element");
                         }
                         ParameterType type = ParameterType.getByTemplateName(parameterStart.group(1));
-                        if(type == null) {
+                        if (type == null) {
                             throw new ParseException("Unable to determine type " + parameterStart.group(1));
                         }
+                        List<ParameterNode> existedNode = result.getParameterNode(name);
+                        if (!existedNode.isEmpty() && existedNode.get(0).getType() != type) {
+                            throw new ParseException("Different types for " + name + " parameter");
+                        }
                         ParameterNode parameterNode = new ParameterNode(
-                                parameterStart.group(2),
+                                name,
                                 type);
                         currentRoot.add(parameterNode);
                         currentRoot = parameterNode;
                         markup = parameterStart.group(3).trim();
                     } else if (markup.startsWith(PARAMETER_END)) {
-                        if(!(currentRoot instanceof ParameterNode)) {
+                        if (!(currentRoot instanceof ParameterNode)) {
                             throw new ParseException("Incorrect ')' after " + currentRoot);
                         }
                         currentRoot = currentRoot.getParent();
@@ -97,7 +103,7 @@ class ParserImpl implements Parser {
                         currentRoot = node;
                         markup = embeddedStart.group(2).trim();
                     } else if (markup.startsWith(EMBEDDED_END)) {
-                        if(!(currentRoot instanceof EmbeddedNode)) {
+                        if (!(currentRoot instanceof EmbeddedNode)) {
                             throw new ParseException("Incorrect '}' after " + currentRoot);
                         }
                         currentRoot = currentRoot.getParent();

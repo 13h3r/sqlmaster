@@ -64,7 +64,7 @@ public class ParserImplPhase2Test {
 
     @Test
     public void testOneParameter() {
-        RootNode t = p.phase2(p.phase1("select * from client where name = /**string name(*/'Abdul Jamal'/**)*/"));
+        RootNode t = p.phase2(p.phase1("select * from client where name = /**string name(*/'Abdul Jamal'/**)*/")).getRootNode();
 
         RootNode ethalon = new RootNode();
         ethalon.add(new PlainTextNode("select * from client where name = "));
@@ -81,7 +81,7 @@ public class ParserImplPhase2Test {
 
     @Test
     public void testOneParameterAndNoValueInside() {
-        RootNode t = p.phase2(p.phase1("select * from client where name = /**string name()*/"));
+        RootNode t = p.phase2(p.phase1("select * from client where name = /**string name()*/")).getRootNode();
 
         RootNode ethalon = new RootNode();
         ethalon.add(new PlainTextNode("select * from client where name = "));
@@ -91,14 +91,14 @@ public class ParserImplPhase2Test {
 
     @Test
     public void emptyTemplate() {
-        RootNode t = p.phase2(p.phase1("select * from client where 1 = 1 and 5 / 8 * 1"));
+        RootNode t = p.phase2(p.phase1("select * from client where 1 = 1 and 5 / 8 * 1")).getRootNode();
         assertNotNull(t);
         assertEquals(t.getChildes().size(), 1);
     }
 
     @Test
     public void testTwoMarkupInOneComment() {
-        RootNode result = p.phase2(p.phase1("select /**string name(*/name/**) number order(*/order/**)*/"));
+        RootNode result = p.phase2(p.phase1("select /**string name(*/name/**) number order(*/order/**)*/")).getRootNode();
 
         RootNode ethalon = new RootNode();
         ethalon.add(new PlainTextNode("select "));
@@ -114,7 +114,7 @@ public class ParserImplPhase2Test {
 
     @Test
     public void testSimpleEmbedded() {
-        RootNode t = p.phase2(p.phase1("select * from client where name = /**join{}*/"));
+        RootNode t = p.phase2(p.phase1("select * from client where name = /**join{}*/")).getRootNode();
 
         RootNode ethalon = new RootNode();
         ethalon.add(new PlainTextNode("select * from client where name = "));
@@ -124,7 +124,7 @@ public class ParserImplPhase2Test {
 
     @Test
     public void testSimpleAnonEmbedded() {
-        RootNode t = p.phase2(p.phase1("select * from client where name = /**{}*/"));
+        RootNode t = p.phase2(p.phase1("select * from client where name = /**{}*/")).getRootNode();
 
         RootNode ethalon = new RootNode();
         ethalon.add(new PlainTextNode("select * from client where name = "));
@@ -135,7 +135,7 @@ public class ParserImplPhase2Test {
     @Test
     public void testSimpleEmbeddedSpaces() {
         RootNode t = p.phase2(p.phase1("select * from client where name = /** " +
-                "  join   {  \t  }  */"));
+                "  join   {  \t  }  */")).getRootNode();
 
         RootNode ethalon = new RootNode();
         ethalon.add(new PlainTextNode("select * from client where name = "));
@@ -151,7 +151,7 @@ public class ParserImplPhase2Test {
                 "/**j3{*/join t3\n" +
                 "/**}}}*/" +
                 ""
-        ));
+        )).getRootNode();
         RootNode ethalon = new RootNode();
         ethalon.add(new PlainTextNode("select * from t0\n"));
         EmbeddedNode j1 = new EmbeddedNode("j1");
@@ -175,7 +175,7 @@ public class ParserImplPhase2Test {
                 "/**j3{*/join t3\n" +
                 "/**}}}*/" +
                 ""
-        ));
+        )).getRootNode();
         RootNode ethalon = new RootNode();
         ethalon.add(new PlainTextNode("select * from t0\n"));
         EmbeddedNode j1 = new EmbeddedNode("");
@@ -198,5 +198,9 @@ public class ParserImplPhase2Test {
         }
     }
 
+    @Test
+    public void testTwoParametersWithSameNameButDifferentTypes() {
+        failWithParseException("select * from client where name = /**string name()*/ and /**int name()*/");
+    }
 
 }
