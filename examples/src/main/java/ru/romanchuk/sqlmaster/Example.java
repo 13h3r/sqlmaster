@@ -1,12 +1,13 @@
 package ru.romanchuk.sqlmaster;
 
-import ru.romanchuk.sqlmaster.engine.EngineFacade;
-
 /**
  * @author Alexey Romanchuk
  */
 public class Example {
-    public void example() {
-        EngineFacade.createTemplate("123");
+    public static void main(String[] args) {
+        Template t = SimpleEngine.create(
+                "select * from client where name = /**string name(*/'John'/**)*/");
+        t.assignValue("name", "Mary");
+        System.out.printf(t.process());
     }
 }

@@ -36,7 +36,7 @@ public class EngineImpl {
         return transformer.transform(node, state);
     }
 
-    public String process(Template template) {
+    public String process(TemplateImpl template) {
         TemplateState processState = new TemplateState(template.getState());
         enableEmbeddedNodes(template.getTree(), processState);
         return processNode(template.getTree().getRootNode(), processState);

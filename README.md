@@ -49,6 +49,9 @@ and dependency
 </dependency>
 ```
 
+# Five minutes tutorial
+
+
 # Concepts
 
 ## Syntax
@@ -58,7 +61,6 @@ Template is plain SQL and markup placed inside javadoc comments - `/**` and `*/`
 There are two kind of syntax constructs: parameters and embedded text.
 
 ## Template
-
 Typical workflow for SQL Master:
 - load template
 - assign parameter values
@@ -135,7 +137,6 @@ where c.name = /** string name(*/'john'/**)*/
 Here you can see two parameters - `name` and `address`. `address` is placed inside embedded text
 
 ## Anonymous embedded text
-
 
 ## Tree
 
