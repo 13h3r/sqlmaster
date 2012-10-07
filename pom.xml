@@ -6,14 +6,14 @@
 
     <groupId>com.github.13h3r.sqlmaster</groupId>
     <artifactId>parent</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.9</version>
     <packaging>pom</packaging>
     <parent>
         <groupId>org.sonatype.oss</groupId>
         <artifactId>oss-parent</artifactId>
         <version>7</version>
     </parent>
-    <name>SQLMaster project</name>
+    <name>parent</name>
     <description>SQLMaster project</description>
     <url>https://github.com/13h3r/sqlmaster</url>
     <developers>
@@ -30,7 +30,6 @@
 
     <modules>
         <module>core</module>
-        <module>examples</module>
     </modules>
 
     <dependencyManagement>
@@ -54,4 +53,29 @@
         </dependencies>
     </dependencyManagement>
 
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>2.2</version>
+                    <executions>
+                        <execution>
+                            <id>attach-sources</id>
+                            <phase>verify</phase>
+                            <goals>
+                                <goal>jar-no-fork</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>2.9</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
 </project>

@@ -2,40 +2,16 @@
 
 SQLMaster is sql template engine that works SQL valid templates. This allows you to have only one SQL template both for SQL development in SQL editor and in you program code to dynamically generate SQL code
 
-Here it is:
+# Ten minutes tutorial
 
-```sql
-select * from client where name = /** string name(*/'John'/**)*/
-```
-
-You can copy-paste it to your favorite sql editor. Also this template contains markup information and you can generate sql by specifying parameter values
-
-```java
-Template t = Engine.load("select * from client where name = /** string name(*/'John'/**)*/");
-t.assignValue("name", "Kate");
-System.out.println(t.process());
-```
-
-and the result is
-
-```sql
-select * from client where name = 'Kate'
-```
-
-## Maven
-Add repository
+## Step 0 - Adding SQLMaster to project
+Add maven repository
 
 ```xml
 <repository>
     <id>sonatype-nexus-snapshots</id>
     <name>Sonatype Nexus Snapshots</name>
-    <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-    <releases>
-        <enabled>true</enabled>
-    </releases>
-    <snapshots>
-        <enabled>true</enabled>
-    </snapshots>
+    <url>http://oss.sonatype.org/content/groups/public</url>
 </repository>
 ```
 
@@ -45,105 +21,125 @@ and dependency
 <dependency>
     <groupId>com.github.13h3r.sqlmaster</groupId>
     <artifactId>core</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
 </dependency>
 ```
 
-# Five minutes tutorial
+## Step 1 - Parameters
 
+For this tutorial assume you are searching for client by name:
 
-# Concepts
+```sql
+select * from client where name = 'John'
+```
 
-## Syntax
-Main goal of SQLMaster is to have only one template - both for SQL development and template engine. 
-Template is plain SQL and markup placed inside javadoc comments - `/**` and `*/`
+Here you have parameter `name`. Markup with SQLMaster:
 
-There are two kind of syntax constructs: parameters and embedded text.
+```sql
+select * from client where name = /**string clientName(*/'John'/**)*/
+```
 
-## Template
-Typical workflow for SQL Master:
-- load template
-- assign parameter values
-- enable embedded text
-- render template
+You still have parameter value and you template is still sql valid and can be placed on your SQL editor as usual. Markup placed betwen `/**` and `*/`. `string` is a type of parameter and `clientName` is parameter name. Parameter value will be put inside `(` `)` symbols of markup. All text inside `(` `)` will be removed at render time.
 
-To load template use `Engine`:
+Here it is how to use template in java:
 
 ```java
-String templateText = ...;
-Template t = Engine.load(templateText);
+Template t = SimpleEngine.create(
+        "select * from client where name = /**string clientName(*/'John'/**)*/");
+t.assignValue("clientName", "Mary");
+System.out.println(t.process());
 ```
 
-`Template` provides API to work with template.
+and the result is
 
-To generate template simple call `process` method of `Template`
-
-## Parameters
-Parameter is a markup element for parameter values substitution. Here it is typical usage:
-
-```sql
-select * from client where name = /** string client(*/'John'/**)*/
+```
+select * from client where name = 'Mary'
 ```
 
-Each parameter have name and type. In example above name is "client" and type is "string". Name is used to identify parameter in template. Type is SQL type used to control type values at runtime.
-
-To assign parameter value use `assignValue` method of `Template`:
-
-```java
-template.assignValue("client", "Mike")
-```
-
-You can place multiple parameters with same name in template. When you assign value for such parameters all occurences will be rendered with given value.
-
-If parameter should be rendered and no value assigned to it exception occurs.
-
-Parameters can contains only plaintext inside of them.
-
-### Default values
-Parameter may contains plaintext inside it to provide 'default values'. These values used to simplify work in SQL editor and will be removed in time of template rendering. These two templates are equivalent:
-
-```sql
-select * from client where name = /** string client(*/'John'/**)*/
-```
-
-```sql
-select * from client where name = /** string client()*/
-```
-
-## Embedded text
-Embedded text is used to insert some predefined text in you template. Most time it used to add some optional joins or conditions. Here it is syntax example:
-
-```sql
-selet * 
-from client c 
-/** fullInfo{*/inner join client_info ci on ci.client_id = c.id /**}*/
-```
-
-By default embedded text is not rendered. There are two ways to render embedded text:
-- explicit call of `enable` method
-- cascade enable (read bellow)
-
-Embedded text can contains another embedded text and parameters.
-
-## Cascade enable
-Most case when you need embedded text is options where clause or optional joins. Both of them should be enabled only when you set value of parameter. Here it is typical usage:
+## Step 2 - Embedded text
+To manage sql you need not only fill parameters placeholders, but enable/disable some parts of sql like joins and conditions. You can do it with embedded text in SQL Master
+Assume your clients have orders and you can search client by name (required) or order number (optional):
 
 ```sql
 select * from client c
-/** additionalInfo{*/ inner join client_info ci on ci.client_id = c.id /**}*/
-where c.name = /** string name(*/'john'/**)*/
-/** additionalInfo{*/ and ci.address = /** string address(*/'Novosibirsk'/**)}*/
+inner join order o on o.client_id = c.id
+where c.name = 'John'
+and o.num = 123456
 ```
-Here you can see two parameters - `name` and `address`. `address` is placed inside embedded text
 
-## Anonymous embedded text
+First - lets markup parameters `clientName` and `orderNum`:
 
-## Tree
+```sql
+select * from client c
+inner join order o on o.client_id = c.id
+where c.name = /**string clientName(*/'John'/**)*/
+and o.num = /**number orderNum(*/123456/**)*/
+```
 
-## Cascade activation
+But what should we do if `orderNum` is not set. We need just do not render some conditional text related to `orderNum`:
 
-# Java API
-## Template loading
-## Type parameters
+```sql
+select * from client c
+inner join order o on o.client_id = c.id
+where c.name = /**string clientName(*/'John'/**)*/
+/**order{*/and o.num = /**number orderNum(*/123456/**)}*/
+```
 
-# Best practices
+You now faced with embedded text markup. Embedded text placed between `{` `}` symbols. Embedded text may have or may have not name. In this example embedded text have name `order`. Embedded text are not rendered by default. To render it you should assignValue to some parameter inside it or just call `enable` method of `Template`.
+
+Some java code:
+
+```java
+Template t = SimpleEngine.create(templateAbove);
+t.assignValue("clientName", "Mary");
+System.out.println(t.process());
+t.assignValue("orderNum", 98);
+System.out.println(t.process());
+```
+
+and result
+
+```sql
+select * from client c
+inner join order o on o.client_id = c.id
+where c.name = 'Mary'
+
+select * from client c
+inner join order o on o.client_id = c.id
+where c.name = 'Mary'
+and o.num = 98
+```
+
+## Step 3 - Embedded text (advanced part)
+What is wrong with previous example? You do not need this `join` on orders when `orderNum` parameter is not set. The solution is to use embedded text with the same name again:
+
+Template:
+
+```sql
+select * from client c
+/**order{*/inner join order o on o.client_id = c./**}*/
+where c.name = /**string clientName(*/'John'/**)*/
+/**order{*/and o.num = /**number orderNum(*/123456/**)}*/
+```
+
+Java:
+
+```java
+Template t = SimpleEngine.create(templateAbove);
+t.assignValue("clientName", "Mary");
+System.out.println(t.process());
+t.assignValue("orderNum", 98);
+System.out.println(t.process());
+```
+
+and result
+
+```sql
+select * from client c
+where c.name = 'Mary'
+
+select * from client c
+inner join order o on o.client_id = c.id
+where c.name = 'Mary'
+and o.num = 98
+```

@@ -6,13 +6,13 @@
 
     <groupId>com.github.13h3r.sqlmaster</groupId>
     <artifactId>core</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.9</version>
     <packaging>jar</packaging>
     <parent>
         <groupId>com.github.13h3r.sqlmaster</groupId>
         <artifactId>parent</artifactId>
         <relativePath>../pom.xml</relativePath>
-        <version>1.0-SNAPSHOT</version>
+        <version>0.9</version>
     </parent>
 
     <dependencies>
@@ -29,4 +29,17 @@
             <artifactId>testng</artifactId>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 </project>
