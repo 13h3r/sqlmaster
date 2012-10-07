@@ -52,7 +52,7 @@ System.out.println(t.process());
 
 and the result is
 
-```
+```sql
 select * from client where name = 'Mary'
 ```
 
