@@ -6,7 +6,7 @@
 
     <groupId>com.github.13h3r.sqlmaster</groupId>
     <artifactId>parent</artifactId>
-    <version>0.9</version>
+    <version>1.0</version>
     <packaging>pom</packaging>
     <parent>
         <groupId>org.sonatype.oss</groupId>
