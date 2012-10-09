@@ -1,4 +1,6 @@
-# Welcome! What is SQL Master? 
+# Welcome! 
+
+# What is SQL Master? 
 
 SQLMaster is sql template engine that works SQL valid templates. This allows you to have only one SQL template both for SQL development in SQL editor and in you program code to dynamically generate SQL code
 

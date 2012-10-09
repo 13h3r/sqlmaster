@@ -11,7 +11,6 @@ import java.util.List;
  */
 public interface TemplateTree {
     RootNode getRootNode();
-
     List<ParameterNode> getParameterNode(String name);
     List<EmbeddedNode> getEmbeddedNode(String name);
 }
